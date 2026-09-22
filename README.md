@@ -1,7 +1,12 @@
-![RA SECURITY Security Agent Logo](ra_security_logo_pro.jpg)
+![RA SECURITY Agent Logo](ra_security_logo_pro.jpg)
 
-# RA SECURITY - Security Agent Architecture
+# RA SECURITY - Autonomous Agent Architecture
+> An evolving architectural framework for long-running, autonomous cybersecurity agents.
 
+## 🚀 Explore the Interactive V2 Architecture
+**[Interactive V2 Website & Architecture Explorer](https://Hossam77i.github.io/security-agent-architecture/)**
+
+---
 A system-level architecture for autonomous, efficient, and learning-capable security research agents.
 
 ## What is this?
