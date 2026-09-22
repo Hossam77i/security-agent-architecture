@@ -1,11 +1,11 @@
-![Horus Eye Security Agent Logo](horus_logo.jpg)
+![RA SECURITY Security Agent Logo](ra_security_logo.jpg)
 
-# Horus Eye - Security Agent Architecture
+# RA SECURITY - Security Agent Architecture
 
 A system-level architecture for autonomous, efficient, and learning-capable security research agents.
 
 ## What is this?
-Horus Eye is an architectural framework and reasoning loop designed to govern autonomous security agents. It moves beyond simple chat interfaces, providing a structured approach to long-running bug hunting and vulnerability research.
+RA SECURITY is an architectural framework and reasoning loop designed to govern autonomous security agents. It moves beyond simple chat interfaces, providing a structured approach to long-running bug hunting and vulnerability research.
 
 ## Why this project exists
 General-purpose LLM agents can be incredibly useful for cybersecurity tasks, but severe architectural problems emerge when attempting to use them for long-running, complex security workflows. 
@@ -17,11 +17,11 @@ There is a critical distinction between *short-term context* (what is happening 
 ## Problems with Current Agent Approaches
 
 ### 1. The "Reasoning Restart" Problem
-Many agent workflows repeatedly rediscover the same information. If an agent discovers an endpoint's behavior in Task A, a naive agent will often investigate the exact same pattern again in Task B. Horus Eye instead extracts reusable knowledge through a structured pipeline:
+Many agent workflows repeatedly rediscover the same information. If an agent discovers an endpoint's behavior in Task A, a naive agent will often investigate the exact same pattern again in Task B. RA SECURITY instead extracts reusable knowledge through a structured pipeline:
 `Raw Experience → Important Observation → Validated Knowledge → Reusable Methodology`
 
 ### 2. The "Tool Chaos" Problem
-Security agents often have access to dozens of tools (Nmap, Burp, nuclei, Metasploit, APIs). Simply giving an LLM access to tools does not create a good workflow. It leads to incorrect tool selection, redundant commands, and failure to interpret results. Horus Eye enforces a deliberate separation:
+Security agents often have access to dozens of tools (Nmap, Burp, nuclei, Metasploit, APIs). Simply giving an LLM access to tools does not create a good workflow. It leads to incorrect tool selection, redundant commands, and failure to interpret results. RA SECURITY enforces a deliberate separation:
 `Reasoning → Planning → Tool Selection → Execution → Observation → Interpretation`
 The agent must understand *why* a tool is used before using it.
 
@@ -29,7 +29,7 @@ The agent must understand *why* a tool is used before using it.
 An agent completing a task successfully does not automatically mean the agent learned from it. This project treats training as an engineering pipeline. Conversation history, training data, experience, and knowledge are NOT the same thing. 
 
 ### 4. The Failure Analysis Problem
-Security tasks often fail. A normal agent moves on. This architecture investigates *why* it failed (e.g., wrong hypothesis, tool failure, incomplete attack chain). In Horus Eye:
+Security tasks often fail. A normal agent moves on. This architecture investigates *why* it failed (e.g., wrong hypothesis, tool failure, incomplete attack chain). In RA SECURITY:
 `Failure ≠ Wasted attempt` 
 `Failure = Training signal`
 

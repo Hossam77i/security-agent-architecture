@@ -1,6 +1,6 @@
 # System Architecture in Layers
 
-The Horus Eye architecture is organized into 10 interacting layers. This document explains the purpose, responsibilities, inputs, outputs, dependencies, failure modes, and security considerations for each layer.
+The RA SECURITY architecture is organized into 10 interacting layers. This document explains the purpose, responsibilities, inputs, outputs, dependencies, failure modes, and security considerations for each layer.
 
 ## Layer 1 — Task / Interface
 **Purpose:** Provides the entry point for the user to assign missions, set scope, and receive final reports.
