@@ -1,8 +1,8 @@
-![Security Agent Logo](logo.jpg)
+![Horus Eye Security Agent Logo](logo.jpg)
 
-# Security Agent Architecture
+# Horus Eye - Security Agent Architecture
 
-Welcome to the Security Agent Architecture repository! This project contains the design, workflows, and reasoning loops for an advanced, autonomous Security Research and Bug Hunting Agent in Open Code. 
+Welcome to the **Horus Eye** Security Agent Architecture repository! This project contains the design, workflows, and reasoning loops for an advanced, autonomous Security Research and Bug Hunting Agent in Open Code, inspired by the vigilance and protection of the ancient Egyptian symbol. 
 
 ## Overview
 
