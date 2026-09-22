@@ -1,4 +1,4 @@
-![RA SECURITY Security Agent Logo](ra_security_logo_flat.jpg)
+![RA SECURITY Security Agent Logo](ra_security_logo_pro.jpg)
 
 # RA SECURITY - Security Agent Architecture
 
