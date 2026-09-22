@@ -1,0 +1,16 @@
+flowchart TD
+    classDef default fill:#1E1E1E,stroke:#555,stroke-width:1px,color:#FFF;
+    classDef tool fill:#b71c1c,stroke:#ef9a9a,stroke-width:2px,color:#FFF;
+    classDef safe fill:#1b5e20,stroke:#a5d6a7,stroke-width:2px,color:#FFF;
+
+    Request["Agent Requests Tool Execution"] --> ScopeCheck{"Is Target in Authorized Scope?"}:::safe
+    ScopeCheck -- "Yes" --> PermCheck{"Does Agent have Least Privilege?"}:::safe
+    PermCheck -- "Yes" --> Exec["Execute Tool / External API"]:::tool
+    Exec --> Output["Raw Untrusted Output"]:::tool
+    
+    Output --> Parse["Isolation & Parsing (Prompt Injection Defense)"]:::safe
+    Parse --> Evidence[("Record Raw Evidence")]
+    Parse --> SafeResult["Structured Safe Data returned to Agent"]:::safe
+    
+    ScopeCheck -- "No" --> Reject["Reject & Log"]
+    PermCheck -- "No" --> Reject

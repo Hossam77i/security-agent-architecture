@@ -1,0 +1,132 @@
+flowchart TD
+    classDef boundary fill:transparent,stroke:#E74C3C,stroke-width:3px,stroke-dasharray: 5 5;
+    classDef agentCore fill:#311b92,stroke:#b39ddb,stroke-width:2px,color:#FFF;
+    classDef worker fill:#0d47a1,stroke:#90caf9,stroke-width:2px,color:#FFF;
+    classDef security fill:#1b5e20,stroke:#a5d6a7,stroke-width:2px,color:#FFF;
+    classDef database fill:#e65100,stroke:#ffcc80,stroke-width:2px,color:#FFF;
+    classDef external fill:#263238,stroke:#b0bec5,stroke-width:2px,color:#FFF;
+    classDef human fill:#b71c1c,stroke:#ef9a9a,stroke-width:2px,color:#FFF;
+    classDef default fill:#1E1E1E,stroke:#555,stroke-width:1px,color:#FFF;
+
+    %% --- LEGEND ---
+    subgraph Legend ["Legend / Key"]
+        direction LR
+        L1["Control/Data Flow"] --> L2["Target"]
+        L3["Feedback/Learning"] -.-> L4["Target"]
+        L5{"Human Approval Gate"}:::human
+        L6[("Persistent State/DB")]:::database
+        L7(("External Service")):::external
+        L8[["Specialized Sub-Agent"]]:::worker
+    end
+
+    %% --- 1. USER & MISSION LAYER ---
+    User["👤 User"] --> Mission["Mission / Research Objective"]
+    Mission --> ScopeDef["Scope & Authorization Definition"]
+    ScopeDef --> Preflight{"Preflight Validation<br/>(Target, Scope, Tools, Policies)"}:::human
+    Preflight -- "Validation Passed" --> ORCHESTRATOR
+
+    %% --- SECURITY BOUNDARY ---
+    subgraph SECURITY_BOUNDARY ["🛡️ ISOLATED & AUTHORIZED SECURITY-RESEARCH ENVIRONMENT (Least Privilege, Sandboxing)"]
+        direction TB
+
+        %% --- 2. MAIN AGENT ---
+        subgraph ORCHESTRATOR ["🤖 MAIN SECURITY RESEARCH AGENT"]
+            WorldModel["World Model & Context"]:::agentCore
+            Loop(("OBSERVE<br/>↓<br/>UNDERSTAND<br/>↓<br/>FORM HYPOTHESES<br/>↓<br/>PRIORITIZE<br/>↓<br/>ACT<br/>↓<br/>OBSERVE RESULT<br/>↓<br/>UPDATE WORLD MODEL<br/>↓<br/>VERIFY<br/>↓<br/>LEARN<br/>↓<br/>NEXT DECISION")):::agentCore
+            WorldModel <--> Loop
+        end
+
+        %% --- 10. MODEL ROUTER ---
+        Router{"Model Router<br/>(Local, Free, Pro)"}:::agentCore
+        ORCHESTRATOR <-->|"Task-based routing"| Router
+
+        %% --- 3. SPECIALIZED WORKERS ---
+        subgraph WORKERS ["Specialized Sub-Agents"]
+            direction LR
+            ReconAgent[["Recon Agent"]]:::worker
+            WebAgent[["Web Security Agent"]]:::worker
+            VulnAgent[["Vuln Research Agent"]]:::worker
+        end
+        ORCHESTRATOR ==>|"Minimal Task Context"| WORKERS
+        WORKERS ==>|"Structured Results"| ORCHESTRATOR
+
+        %% --- 4. SKILL REGISTRY ---
+        Skills[("Skill Registry<br/>(Core, Research, Security, Agent)")]:::database
+        Skills -.->|"On-Demand Loading"| ORCHESTRATOR
+
+        %% --- 8 & 9. MEMORY & CONTEXT ---
+        subgraph MEMORY_SYSTEM ["Persistent Memory System"]
+            CtxMgr["Context Manager<br/>(Filter, Compress, Token Budget)"]:::security
+            L0["L0: Current Context"]:::database
+            L1["L1: Task State"]:::database
+            L2["L2: Relevant Knowledge"]:::database
+            L3["L3: Project History"]:::database
+            L4[("L4: Raw Evidence")]:::database
+            
+            L0 & L1 & L2 & L3 & L4 --> CtxMgr
+        end
+        CtxMgr ==>|"Retrieve Relevant Context"| ORCHESTRATOR
+        ORCHESTRATOR -.->|"Checkpoint Updates"| MEMORY_SYSTEM
+
+        %% --- 6 & 7. TOOL / MCP LAYER ---
+        subgraph TOOL_GATEWAY ["Tool Gateway & Security Layer"]
+            direction TB
+            PolicyCheck{"Scope, Permission & Policy Check"}:::security
+            ExecTool["Execute (Browser, HTTP, Shell)"]:::security
+            IsoParse["Isolate Untrusted Content & Parse"]:::security
+            
+            PolicyCheck -- "Authorized" --> ExecTool --> IsoParse
+        end
+        ORCHESTRATOR ==>|"Tool Request"| PolicyCheck
+        IsoParse ==>|"Safe Structured Evidence"| ORCHESTRATOR
+
+        %% --- 11 & 12. VULNERABILITY PIPELINE ---
+        subgraph RESEARCH_PIPELINE ["Vulnerability Pipeline & Chaining Engine"]
+            direction TB
+            HypoInvestigate["Hypothesis Investigation & Root Cause Analysis"]
+            ChainingEngine["CHAIN DISCOVERY / ATTACK-PATH REASONING<br/>(Finding A + Finding B = Combined Impact)"]:::agentCore
+            NoveltyCheck{"Is it Known?"}:::agentCore
+            DeepVerif["Deep Verification & Impact Assessment"]
+            
+            HypoInvestigate --> ChainingEngine --> NoveltyCheck
+            NoveltyCheck -- "Yes" --> KnownDB[("Existing Knowledge")]:::database
+            NoveltyCheck -- "Unknown/Novel" --> DeepVerif
+        end
+        ORCHESTRATOR <==> RESEARCH_PIPELINE
+
+        %% --- 16 & 17. OBSERVABILITY & AUTONOMY ---
+        subgraph INFRA ["Observability & Long-Running Autonomy"]
+            JobMgr["Job Manager (Checkpoints, Watchdog, Recovery)"]
+            ObsLogs[("Structured Audit Trail & Token Usage")]:::database
+        end
+        ORCHESTRATOR -.-> INFRA
+    end
+
+    %% --- 5. RECONNAISSANCE LAYER ---
+    subgraph RECON_LAYER ["Reconnaissance Layer"]
+        ExtProviders(("Providers<br/>(Shodan, GitHub, etc.)")):::external
+        NormDedupe["Normalization & Correlation"]:::external
+        AssetGraph["Asset Graph & Attack Surface"]:::external
+        ExtProviders --> NormDedupe --> AssetGraph
+    end
+    AssetGraph ==>|"Many noisy sources → 1 normalized model"| ORCHESTRATOR
+
+    %% --- 13, 14, 15. EVALUATION & LEARNING ---
+    subgraph LEARNING_LOOP ["Training & Curriculum Engine"]
+        Labs(("Training Labs<br/>(JuiceShop, Holdout Sets)")):::external
+        Evaluator["Independent Evaluation Engine<br/>(Correctness, Token Usage)"]:::security
+        FailureAnalysis["Failure & Success Analysis"]:::agentCore
+        Curriculum["Curriculum Engine<br/>(Weakness, Generalization)"]:::agentCore
+    end
+    ORCHESTRATOR -.->|"Agent Attempt"| Evaluator
+    Evaluator -.-> FailureAnalysis
+    FailureAnalysis -.->|"Update Memory & Skills"| Skills
+    FailureAnalysis -.->|"Identify Weaknesses"| Curriculum
+    Curriculum -.->|"Next Selected Task"| Labs
+    Labs -.-> ORCHESTRATOR
+
+    %% --- DISCLOSURE ---
+    DeepVerif --> HumanReview{"Human Review Gate"}:::human
+    HumanReview -- "Approved" --> Disclosure["Responsible Disclosure Workflow"]:::external
+
+    class SECURITY_BOUNDARY boundary;

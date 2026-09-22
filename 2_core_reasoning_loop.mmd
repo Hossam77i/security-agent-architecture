@@ -1,0 +1,28 @@
+flowchart LR
+    classDef default fill:#1E1E1E,stroke:#555,stroke-width:1px,color:#FFF;
+    classDef agentCore fill:#311b92,stroke:#b39ddb,stroke-width:2px,color:#FFF;
+    classDef security fill:#1b5e20,stroke:#a5d6a7,stroke-width:2px,color:#FFF;
+    classDef db fill:#e65100,stroke:#ffcc80,stroke-width:2px,color:#FFF;
+    
+    subgraph MEMORY ["Memory & Context Management"]
+        direction TB
+        RawEvidence[("Large Data / Raw Evidence")]:::db
+        Filter["Relevance Filtering & Deduplication"]
+        Compress["Summarization & Token Budgeting"]
+        RawEvidence --> Filter --> Compress
+    end
+
+    subgraph AGENT ["Main Agent Reasoning"]
+        direction TB
+        Ctx[Context] --> Observe[Observe] --> Hypothesize[Form Hypotheses] --> Plan[Task Decomposition & Prioritization]
+    end
+
+    subgraph WORKERS ["Delegation"]
+        direction TB
+        Task1[["Recon Task"]]:::agentCore
+        Task2[["Code Analysis Task"]]:::agentCore
+    end
+
+    Compress ==>|"Strictly Budgeted Context"| AGENT
+    Plan ==>|"Isolated Task Scope"| WORKERS
+    WORKERS ==>|"Structured Summary"| AGENT

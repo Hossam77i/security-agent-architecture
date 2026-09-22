@@ -1,0 +1,16 @@
+flowchart TD
+    classDef default fill:#1E1E1E,stroke:#555,stroke-width:1px,color:#FFF;
+    classDef chain fill:#004d40,stroke:#80cbc4,stroke-width:2px,color:#FFF;
+    classDef finding fill:#f57f17,stroke:#fff59d,stroke-width:2px,color:#FFF;
+
+    Observation["Observation / Anomaly"] --> Hypo["Alternative Hypotheses"]
+    Hypo --> Investigate["Investigation"] --> Ev["Evidence"]
+    Ev --> Root["Root Cause Analysis"] --> FindingA["Finding A (e.g., SSRF)"]:::finding
+    
+    FindingA --> ImpactA["Impact: New Network Capability"]:::chain
+    ImpactA --> Boundary["Changed Security Boundary"]:::chain
+    
+    Boundary --> FindingB["Finding B (e.g., Unauth Internal API)"]:::finding
+    FindingB --> Hypothesis["Attack Path Hypothesis"]:::chain
+    Hypothesis --> Verif["Independent Verification"]:::chain
+    Verif --> CombImpact["Combined Impact Assessment"]:::finding
