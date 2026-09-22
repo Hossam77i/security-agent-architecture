@@ -158,8 +158,8 @@ See: [Token Optimization Skill](token-optimization-SKILL.md)
 | Self-Improving Curriculum Engine | RESEARCH DIRECTION |
 
 ## Documentation & Diagrams
-- [Master System Architecture Diagram](1_master_system_architecture.png) ([Mermaid](1_master_system_architecture.mmd))
-- [Core Reasoning Loop Diagram](2_core_reasoning_loop.png) ([Mermaid](2_core_reasoning_loop.mmd))
-- [Tool Gateway & Safety Diagram](3_tool_gateway_safety.png) ([Mermaid](3_tool_gateway_safety.mmd))
-- [Chain Discovery Pipeline Diagram](4_chain_discovery_pipeline.png) ([Mermaid](4_chain_discovery_pipeline.mmd))
+- [Master System Architecture Diagram](1_master_system_architecture.mmd)
+- [Core Reasoning Loop Diagram](2_core_reasoning_loop.mmd)
+- [Tool Gateway & Safety Diagram](3_tool_gateway_safety.mmd)
+- [Chain Discovery Pipeline Diagram](4_chain_discovery_pipeline.mmd)
 - [All Resources Index](ALL_RESOURCES_INDEX.md)
