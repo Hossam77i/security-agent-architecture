@@ -1,0 +1,51 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "opencode/muse-spark-1.3-contributor-free",
+  "small_model": "opencode/nemotron-3.5-lightning-free",
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "reserved": 15000
+  },
+  "snapshot": false,
+  "watcher": {
+    "ignore": ["node_modules/**", "dist/**", ".git/**", "SecLists/**", "wordlists/**", "nuclei-templates/**", "*.log", "*.mp4", "*.jpg", "*.png"]
+  },
+  "mcp": {
+    "burp": {
+      "type": "remote",
+      "url": "http://127.0.0.1:9876/",
+      "enabled": true
+    },
+    "brave": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp@latest", "--executable-path", "/opt/brave.com/brave/brave-browser", "--no-sandbox", "--user-data-dir", "/home/aclies/.config/BraveSoftware/Brave-Browser"],
+      "enabled": false
+    },
+    "chrome": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp@latest", "--browser", "chrome", "--no-sandbox", "--headless"],
+      "enabled": true
+    },
+    "firefox": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp@latest", "--browser", "firefox", "--no-sandbox", "--user-data-dir", "/home/aclies/.mozilla/firefox"],
+      "enabled": false
+    }
+  },
+  "permission": {
+    "skill": {
+      "*": "deny",
+      "bb-methodology": "allow",
+      "bountyforge": "allow",
+      "recon-and-osint": "allow",
+      "offensive-osint": "allow",
+      "recon-scope-triage": "allow",
+      "pentest-engagement": "allow",
+      "web2-vuln-classes": "allow",
+      "vulnerability-chaining": "allow",
+      "triage-validation": "allow",
+      "report-writing": "allow"
+    }
+  }
+}
