@@ -3,42 +3,7 @@
 
 ---
 
-## PART 1: HISTORICAL INE LABS & CTF EXPERIENCE (from AGENTS.md)
-
-### INE Lab CTFs Completed
-
-| CTF | Target | Tasks | Key Lessons | Flag Format |
-|-----|--------|-------|-------------|-------------|
-| **ReconNexus CTF 1** | Web app | 4 tasks | JS tracker → API; backup files (ext matrix); prefetch HTML; SQLitei UNION | FLAG{n}_32hex |
-| **Advanced Injection CTF 2** | Various | SQLi, Mongo, LDAP, XXE | LDAP md5-correction cycle; triple-lock essential | FLAG{n}_32hex |
-| **API Pen Testing CTF 1 (WebServVault)** | target.ine.local (SOAP:80, REST:1337) | 4 tasks | WSDL hidden op; SQLite SQLi; mass-assignment role; JWT secret forge | FLAG{n}_32hex |
-| **Filter Evasion & WAF Bypass CTF 1 (FlowBoard)** | target.ine.local | 4 tasks | Direct POST bypass; event-handler XSS; regex fuzzing; mobile UA gate | FLAG{n}_32hex |
-| **Server-Side Attacks CTF 1 (ServerVault)** | target.ine.local (Apache+PHP-FPM) | 4 tasks | SSRF→internal:7777; XXE file://; PHP deserialization; SSRF→RCE | FLAG{n}_32hex |
-| **Mobile App Sec CTF 1 (SecureBank)** | APK com.securebank.app, IPA SecureBank.ipa | 4 tasks | dexdump Constants; emergency backdoor JSON; IPA dylib grep | Hex only |
-| **Mobile Pen-Testing CTF 1 (CampusConnect)** | APK com.campusconnect.app, IPA | IN PROGRESS 0/5 | Endpoints mapped; PIN brute failed; login contract unknown | — |
-| **Mobile Pen-Testing CTF 2 (OrbitHR)** | APK com.orbithr.app | 4/4 | Login SQLi JSON; X-User-Role header; IDOR employee; wordlist paths | FLAG{n}_32hex |
-
-### INE Lab Infrastructure Rules (from AGENTS.md)
-
-| Rule | Detail |
-|------|--------|
-| **Flag verification** | Triple-lock: spaced hex → byte table → LEN 38 + remote md5sum + string compare |
-| **Terminal channel** | Right-click desktop → Open in Terminal; `page.keyboard.type`; 12ms delay; leading space; `echo MARKER` |
-| **Screenshot/OCR** | `~/.local/tess/usr/bin/tesseract <img> stdout --tessdata-dir ~/.local/tessdata`; never Read images |
-| **Image budget** | Max 50/request; zero-image mode after ~15; rm screenshots after OCR |
-| **Channels that DON'T work** | webhook.site (no outbound); clipboard (RDP X sync fails); local DNS/ping target.ine.local |
-
-### Pre-installed Tools on INE Student VMs
-| Tool | Location |
-|------|----------|
-| frida client/server | Preinstalled |
-| dexdump | `~/Android/Sdk/build-tools/*/` |
-| adb | Standard |
-| Tesseract | `~/.local/tess/usr/bin/tesseract` |
-
----
-
-## PART 2: SKILLS LOADED FROM PREVIOUS SESSIONS
+## PART 1: SKILLS LOADED FROM PREVIOUS SESSIONS
 
 ### Core Methodology Skills
 | Skill | Path | Description |
@@ -57,7 +22,6 @@
 ### Specialized Skills (Loaded This Session)
 | Skill | Path | Description |
 |-------|------|-------------|
-| **ine-rdp-lab** | `/home/user/.config/opencode/skills/ine-rdp-lab/SKILL.md` | INE lab operator: terminal channel, OCR pipeline, flag verification, mobile playbook |
 | **telegram-intel** | `/home/user/.config/opencode/skills/telegram-intel/TELEGRAM_INTEL.md` | 8 Telegram channels curated |
 | **github-x-intel** | `/home/user/.config/opencode/skills/github-x-intel/GITHUB_X_INTEL.md` | GitHub repos, X accounts, H1 reports, writeups |
 | **unified-bug-classes** (18 skills) | `/home/user/.config/opencode/skills/unified-bug-classes/` | Merged references for each vuln class |
@@ -244,6 +208,199 @@
 | CVE-2026-21858 | n8n Unauth RCE (Ni8mare) | BrutSecurity |
 | CVE-2026-43499 | GhostLock | heckintosh_ |
 
+---
+
+## PART 5: VULNERABLE APPLICATIONS FOR HANDS-ON PRACTICE
+
+### OWASP Flagship Projects
+
+| Application | Type | URL | Difficulty | Key Vulnerabilities Covered |
+|-------------|------|-----|------------|----------------------------|
+| **OWASP Juice Shop** | Modern Node.js/Angular e-commerce | https://github.com/juice-shop/juice-shop | ★☆☆–★★★ | XSS, SQLi, IDOR, JWT, SSRF, XXE, RCE, crypto, deserialization, SSRF, GraphQL |
+| **OWASP WebGoat** | Java/Spring Boot tutorial app | https://github.com/WebGoat/WebGoat | ★☆☆–★★☆ | SQLi, XSS, auth bypass, path traversal, JWT, crypto, deserialization |
+| **OWASP WebWolf** | Attacker simulation for WebGoat | https://github.com/WebGoat/WebWolf | ★☆☆ | SSRF, open redirect, login CSRF, path traversal |
+| **OWASP RailsGoat** | Ruby on Rails vulnerable app | https://github.com/OWASP/railsgoat | ★☆☆ | SQLi, XSS, mass assignment, auth bypass |
+| **OWASP NodeGoat** | Node.js vulnerable app | https://github.com/OWASP/NodeGoat | ★☆☆ | XSS, SQLi, command injection, path traversal |
+
+### Classic Vulnerable VMs & Apps
+
+| Application | Platform | URL | Difficulty | Focus |
+|-------------|----------|-----|------------|-------|
+| **DVWA** (Damn Vulnerable Web App) | PHP/MySQL | https://github.com/digininja/DVWA | ★☆☆–★★☆ | SQLi, XSS, CSRF, file upload, command injection, LFI/RFI |
+| **bWAPP** | PHP | https://github.com/ethicalhack3r/bWAPP | ★☆☆–★★☆ | 100+ vulnerabilities (OWASP Top 10 + more) |
+| **Mutillidae II** | PHP | https://github.com/webpwnized/mutillidae | ★☆☆–★★☆ | OWASP Top 10 2013/2017, HTML5, web services |
+| **SQLol** | PHP | https://github.com/SpiderLabs/SQLol | ★☆☆ | SQL injection focus (error, blind, time-based) |
+| **XSS Game** | Google | https://xss-game.appspot.com/ | ★☆☆ | Pure XSS challenges (6 levels) |
+| **Hackazon** | PHP | https://github.com/rapid7/hackazon | ★☆☆–★★☆ | E-commerce, SQLi, XSS, auth, API |
+| **Altoro Mutual** | IBM | https://github.com/altoromutual/altoromutual | ★☆☆ | Banking app, SQLi, XSS, path traversal |
+
+### Modern / Real-World Style Apps
+
+| Application | Stack | URL | Difficulty | Focus |
+|-------------|-------|-----|------------|-------|
+| **VAmPI** (Vulnerable API) | Python/FastAPI | https://github.com/erev0s/VAmPI | ★☆☆–★★☆ | REST API vulnerabilities (OWASP API Top 10) |
+| **APISec Game** | Node.js | https://github.com/apisecai/apisec-game | ★☆☆–★★☆ | API security challenges |
+| **GraphQL Security** | Various | https://github.com/dolevf/graphql-cop | ★★☆ | GraphQL introspection, batching, DoS |
+| **JWT Hacking** | Multiple | https://github.com/wallarm/jwt-hacking | ★☆☆–★★☆ | JWT vulnerabilities (alg=none, key confusion) |
+| **SSRFmap** | Python | https://github.com/swisskyrepo/SSRFmap | ★★☆ | SSRF exploitation automation |
+| **NoSQLMap** | Python | https://github.com/codingo/NoSQLMap | ★★☆ | NoSQL injection (MongoDB, CouchDB) |
+
+### Mobile Applications
+
+| Application | Platform | URL | Difficulty | Focus |
+|-------------|----------|-----|------------|-------|
+| **InsecureBankv2** | Android | https://github.com/dineshshetty/Android-InsecureBankv2 | ★☆☆–★★☆ | Crypto, auth, storage, SSL pinning, WebView |
+| **DIVA** (Damn Insecure and Vulnerable App) | Android | https://github.com/payatu/diva-android | ★☆☆–★★☆ | Insecure logging, crypto, storage, auth |
+| **OWASP MSTG** | Android/iOS | https://github.com/OWASP/owasp-mstg | ★★☆–★★★ | Testing guide + vulnerable apps |
+| **iGoat** | iOS | https://github.com/OWASP/iGoat | ★☆☆–★★☆ | iOS-specific vulnerabilities |
+| **SwiftShield** | iOS | https://github.com/ashishb/SwiftShield | ★★☆ | Swift/iOS security testing |
+| **Android-InsecureApp** | Android | https://github.com/AndroBugs/InsecureApp | ★☆☆ | Various Android vulns |
+
+### Cloud / Infrastructure Practice
+
+| Platform | URL | Focus |
+|----------|-----|-------|
+| **CloudGoat** | https://github.com/RhinoSecurityLabs/cloudgoat | AWS vulnerable by design (IAM, S3, Lambda, EC2) |
+| **S3 Bucket Challenges** | https://github.com/jordanpotti/AWSBucketDump | S3 enumeration/exploitation |
+| **Kubernetes Goat** | https://github.com/madhuakula/kubernetes-goat | K8s cluster vulnerabilities |
+| **TerraGoat** | https://github.com/bridgecrewio/terragoat | Terraform/IaC misconfigurations |
+| **Bad Kubernetes** | https://github.com/embertoo/bad-kubernetes | K8s security misconfigurations |
+
+### CTF Platforms & Practice Sites
+
+| Platform | URL | Type | Cost |
+|----------|-----|------|------|
+| **PortSwigger Web Security Academy** | https://portswigger.net/web-security | Interactive labs | Free (some Pro) |
+| **Hack The Box** | https://www.hackthebox.com/ | VMs + challenges | Freemium |
+| **TryHackMe** | https://tryhackme.com/ | Guided rooms | Freemium |
+| **PentesterLab** | https://pentesterlab.com/ | Vulnerable apps + exercises | Paid |
+| **Root Me** | https://www.root-me.org/ | Challenges | Free |
+| **OverTheWire** | https://overthewire.org/wargames/ | Wargames (Bandit, Narnia, etc.) | Free |
+| **VulnHub** | https://www.vulnhub.com/ | Downloadable VMs | Free |
+| **CTFtime** | https://ctftime.org/ | CTF calendar + writeups | Free |
+
+### Bug Bounty Practice Programs (Legal)
+
+| Program | URL | Scope | Notes |
+|---------|-----|-------|-------|
+| **HackerOne CTF** | https://hackerone.com/ctf | Practice CTF | Free, legal |
+| **Bugcrowd University** | https://github.com/bugcrowd/bugcrowd_university | Educational content | Free |
+| **Intigriti Challenges** | https://challenge.intigriti.io/ | Monthly challenges | Free |
+| **YesWeHack DoJo** | https://dojo.yeswehack.com/ | Practice platform | Free |
+| **Immunefi** | https://immunefi.com/ | Web3/DeFi bounties | Paid bounties |
+| **Google VRP** | https://bughunters.google.com/ | Google products | High rewards |
+| **Microsoft Bug Bounty** | https://www.microsoft.com/en-us/msrc/bounty | Microsoft products | High rewards |
+
+### Docker One-Liners for Quick Start
+
+```bash
+# OWASP Juice Shop (most popular)
+docker run -d -p 3000:3000 bkimminich/juice-shop
+
+# DVWA
+docker run -d -p 8080:80 vulnerables/web-dvwa
+
+# bWAPP
+docker run -d -p 8081:80 raesene/bwapp
+
+# WebGoat + WebWolf
+docker run -d -p 8082:8082 -p 9090:9090 webgoat/goatandwolf
+
+# VAmPI (API)
+docker run -d -p 5000:5000 erev0s/vampi
+
+# CloudGoat (AWS - requires creds)
+pip install cloudgoat && cloudgoat create --template all
+
+# Kubernetes Goat
+kubectl apply -f https://raw.githubusercontent.com/madhuakula/kubernetes-goat/main/kubernetes-goat.yaml
+
+# bWAPP (alternative)
+docker run -d -p 80:80 raesene/bwapp
+
+# Mutillidae II
+docker run -d -p 8083:80 citizenstig/nowasp
+
+# GraphQL Vulnerable App
+docker run -d -p 4000:4000 dolevf/vulnerable-graphql-app
+
+# JWT Practice
+docker run -d -p 3001:3000 wangzq/jwt-hacking
+```
+
+### Mapping Practice Apps to Unified Skills
+
+| Unified Skill | Primary Practice Apps | Secondary Apps |
+|---------------|----------------------|----------------|
+| **SQLI_UNIFIED** | DVWA, SQLol, bWAPP, Juice Shop | WebGoat, Mutillidae, Hackazon |
+| **XSS_UNIFIED** | XSS Game, DVWA, bWAPP, Juice Shop | WebGoat, Mutillidae, Hackazon |
+| **IDOR_ACCESS_CONTROL_UNIFIED** | Juice Shop, WebGoat, bWAPP | DVWA, Hackazon, WebWolf |
+| **SSRF_UNIFIED** | Juice Shop, WebGoat, WebWolf, SSRFmap | DVWA (limited), bWAPP |
+| **AUTH_BYPASS_2FA_UNIFIED** | Juice Shop, WebGoat, DVWA | bWAPP, Hackazon, VAmPI |
+| **FILE_UPLOAD_UNIFIED** | DVWA, bWAPP, Juice Shop | WebGoat, Mutillidae, Hackazon |
+| **BUSINESS_LOGIC_UNIFIED** | Juice Shop, WebGoat, Hackazon | DVWA (limited), VAmPI |
+| **RACE_CONDITIONS_UNIFIED** | Juice Shop (limited), custom apps | WebGoat (limited), DVWA (limited) |
+| **OAUTH_OIDC_UNIFIED** | Juice Shop, WebGoat, WebWolf | VAmPI, custom OAuth apps |
+| **GRAPHQL_UNIFIED** | GraphQL Security, vulnerable-graphql-app | Juice Shop (has GraphQL), custom |
+| **CACHE_POISONING_UNIFIED** | Juice Shop, custom labs | PortSwigger labs (Pro) |
+| **DESERIALIZATION_UNIFIED** | WebGoat, Juice Shop, custom | DVWA (limited), bWAPP |
+| **MOBILE_PENTESTING_UNIFIED** | InsecureBankv2, DIVA, iGoat | OWASP MSTG apps, Android-InsecureApp |
+| **API_SECURITY_UNIFIED** | VAmPI, APISec Game, Juice Shop API | Hackazon API, custom |
+| **AI_LLM_UNIFIED** | Custom (few public vuln LLM apps) | PortSwigger AI labs, custom MCP servers |
+| **SUPPLY_CHAIN_UNIFIED** | Custom (register test packages) | CloudGoat, TerraGoat |
+| **CLOUD_INFRA_UNIFIED** | CloudGoat, Kubernetes Goat, TerraGoat | Bad Kubernetes, S3 challenges |
+| **RSC_HTTP3_UNIFIED** | Custom Next.js 13+ apps | Juice Shop (limited), custom |
+
+---
+
+## PART 6: PRACTICE ROADMAP (Progressive)
+
+### Phase 1: Foundations (Week 1-2)
+```
+[ ] DVWA — Complete all modules (SQLi, XSS, CSRF, File Upload, Command Injection, LFI/RFI)
+[ ] XSS Game — Complete all 6 levels
+[ ] SQLol — Practice error/blind/time-based SQLi
+[ ] PortSwigger Academy — SQLi, XSS, CSRF, Path Traversal modules
+```
+
+### Phase 2: OWASP Top 10 Mastery (Week 3-4)
+```
+[ ] Juice Shop — Solve all ★☆☆ and ★★☆ challenges (scoreboard > 50%)
+[ ] WebGoat — Complete all lessons (SQLi, XSS, Auth, Crypto, Deserialization)
+[ ] bWAPP — Complete 50+ vulnerabilities
+[ ] PortSwigger Academy — Auth, Access Control, SSRF, XXE modules
+```
+
+### Phase 3: Advanced Web (Week 5-6)
+```
+[ ] Juice Shop — Solve ★★★ challenges (RCE, deserialization, SSRF, crypto)
+[ ] WebWolf — Complete all attacker exercises (SSRF, open redirect, CSRF)
+[ ] VAmPI — Complete all API Top 10 challenges
+[ ] GraphQL Security — Introspection, batching, DoS, aliasing
+[ ] PortSwigger Academy — Advanced topics (cache poisoning, request smuggling)
+```
+
+### Phase 4: Specialized (Week 7-8)
+```
+[ ] InsecureBankv2 — Complete all Android challenges (SSL pinning, crypto, storage)
+[ ] DIVA — Complete all Android challenges
+[ ] CloudGoat — Deploy 5+ scenarios (IAM, S3, Lambda, EC2)
+[ ] Kubernetes Goat — Complete 5+ K8s scenarios
+[ ] JWT Hacking — All alg=none, key confusion, kid injection
+[ ] SSRFmap — Automate SSRF discovery/exploitation
+```
+
+### Phase 4: Bug Bounty Simulation (Week 9+)
+```
+[ ] Hack The Box / TryHackMe — 3+ machines per week
+[ ] PortSwigger Pro labs — If budget allows
+[ ] Real bug bounty programs — Start with VDP/low-tier
+[ ] CTF participation — 1-2 per month
+[ ] Writeup study — 3+ per week from H1 disclosed, PentesterLand, etc.
+```
+
+---
+
 ### Skills Created This Session
 | Skill | Path |
 |-------|------|
@@ -260,6 +417,127 @@
 
 Key skill categories:
 - **Core Methodology** (10): bb-methodology, bountyforge, offensive-osint, pentest-engagement, recon-and-osint, recon-scope-triage, report-writing, triage-validation, vulnerability-chaining, web2-vuln-classes
-- **INE Labs** (1): ine-rdp-lab
 - **New Intelligence** (3): telegram-intel, github-x-intel, unified-bug-classes (18)
 - **Specialized** (170+): All skills in `/home/user/.config/opencode/skills/` covering web, mobile, API, cloud, AI/LLM, crypto, supply chain, red team, blue team, etc.
+
+---
+
+## PART 7: USER'S COMPLETE 44-STEP MASTER CURRICULUM (MAPPED)
+
+> This is the user's full training plan organized into 5 phases with 44 steps,
+> mapped to unified skills, resources, labs, and progression criteria.
+
+### PHASE 1: WEB APPLICATION SECURITY (Steps 1-7)
+| # | Target | Status | Unified Skills | Primary Resources |
+|---|--------|--------|----------------|-------------------|
+| 1 | **OWASP Juice Shop** | ✅ COMPLETED | All web skills | https://github.com/juice-shop/juice-shop |
+| 2 | **DVWA** | 🔲 | SQLI, XSS, FILE_UPLOAD, AUTH_BYPASS, IDOR | https://github.com/digininja/DVWA |
+| 3 | **OWASP WebGoat** | 🔲 | All web skills (guided) | https://github.com/WebGoat/WebGoat |
+| 4 | **OWASP crAPI** | 🔲 | API_SECURITY, OAUTH_OIDC, AUTH_BYPASS | https://github.com/OWASP/crAPI |
+| 5 | **VAmPI** | 🔲 | API_SECURITY, AUTH_BYPASS, MASS_ASSIGNMENT | https://github.com/erev0s/VAmPI |
+| 6 | **WebSploit Labs** | 🔲 | All web skills | https://github.com/WebSploit/WebSploit |
+| 7 | **OWASP VWAD** | 🔲 | All (directory of vuln apps) | https://github.com/OWASP/VWAD |
+
+### PHASE 2: MOBILE APPLICATION SECURITY (Steps 8-18)
+| # | Target | Status | Unified Skills | Primary Resources |
+|---|--------|--------|----------------|-------------------|
+| 8 | **Mobile App Sec Fundamentals** | 🔲 | MOBILE_PENTESTING | OWASP MASVS/MASTG |
+| 9 | **Android Security Labs** | 🔲 | MOBILE_PENTESTING | https://github.com/asvid/Android-Security-Labs |
+| 10 | **iOS Security Fundamentals & Labs** | 🔲 | MOBILE_PENTESTING | https://github.com/OWASP/iGoat |
+| 11 | **OWASP MASTG** | 🔲 | MOBILE_PENTESTING (methodology) | https://github.com/OWASP/owasp-mstg |
+| 12 | **OWASP MASVS** | 🔲 | MOBILE_PENTESTING (requirements) | https://github.com/OWASP/owasp-masvs |
+| 13 | **Android Reverse Engineering Labs** | 🔲 | MOBILE_PENTESTING | https://github.com/AndroBugs/InsecureApp |
+| 14 | **Mobile API & Backend Security** | 🔲 | MOBILE_PENTESTING + API_SECURITY | crAPI, VAmPI |
+| 15 | **Mobile Auth & Authorization** | 🔲 | MOBILE_PENTESTING + AUTH_BYPASS | InsecureBankv2, DIVA |
+| 16 | **Mobile Storage, Crypto & IPC** | 🔲 | MOBILE_PENTESTING | InsecureBankv2, DIVA, MSTG |
+| 17 | **Mobile Network Security** | 🔲 | MOBILE_PENTESTING + SSRF | Frida SSL bypass, mitmproxy |
+| 18 | **Mobile Binary/Native Code Analysis** | 🔲 | MOBILE_PENTESTING | Ghidra, JADX, Frida, radare2 |
+
+### PHASE 3: WEB3 / SMART CONTRACT SECURITY (Steps 19-30)
+| # | Target | Status | Unified Skills | Primary Resources |
+|---|--------|--------|----------------|-------------------|
+| 19 | **Web3 Security Fundamentals** | 🔲 | Web3 skills (web3-*) | https://github.com/patdoyle/SmartContractSecurity |
+| 20 | **Solidity Security Labs** | 🔲 | web3-solidity-audit, web3-bug-classes | https://github.com/crytic/slither |
+| 21 | **Smart Contract Vulnerability Labs** | 🔲 | web3-bug-classes, web3-hunt-foundation | https://github.com/crytic/echidna |
+| 22 | **Ethereum Security Labs** | 🔲 | web3-*, web3-hunt-zksync-era | https://github.com/trailofbits/eth-security-toolbox |
+| 23 | **DeFi Security Labs** | 🔲 | web3-bug-classes, web3-case-study | https://github.com/sunsec/DeFi-Attack |
+| 24 | **Web3 Auth & Wallet Security** | 🔲 | web3-auth, web3-wallet | https://github.com/ethereum/EIPs |
+| 25 | **Smart Contract Auditing** | 🔲 | web3-solidity-audit-mcp, web3-start-here | https://github.com/trailofbits/publications |
+| 26 | **Smart Contract Source-Code Analysis** | 🔲 | web3-grep-arsenal, sast-* | Slither, Mythril, Foundry |
+| 27 | **Blockchain Transaction & State Analysis** | 🔲 | web3-hunt-foundation | https://github.com/ethereum/go-ethereum |
+| 28 | **Cross-Contract/Protocol Interaction** | 🔲 | web3-bug-classes, vulnerability-chaining | Foundry, Hardhat, Tenderly |
+| 29 | **Web3 Business Logic & Economic Security** | 🔲 | web3-bug-classes, web3-case-study | DeFi attack vectors |
+| 30 | **Historical Smart Contract Vuln Labs** | 🔲 | web3-case-study-role-misconfig | https://github.com/sunsec/DeFi-Attack |
+
+### PHASE 4: SOURCE CODE REVIEW & CVE REPRODUCTION (Steps 31-35)
+| # | Target | Status | Unified Skills | Primary Resources |
+|---|--------|--------|----------------|-------------------|
+| 31 | **Source-Code Vulnerability Analysis** | 🔲 | sast-*, web2-vuln-classes | CodeQL, Semgrep, SonarQube |
+| 32 | **Secure Code Review Labs** | 🔲 | sast-*, securecoder-* | OWASP Code Review Guide |
+| 33 | **Historical CVE Reproduction Labs** | 🔲 | web2-vuln-classes, vulnerability-chaining | https://github.com/ARPSyndicate/cvemon |
+| 34 | **CyberGym** | 🔲 | pentest-engagement, pentest-* | https://cybergym.io/ |
+| 35 | **CyberGym-E2E** | 🔲 | pentest-engagement (full chain) | https://cybergym.io/ |
+
+### PHASE 5: ADVANCED RESEARCH & CHAINING (Steps 36-44)
+| # | Target | Status | Unified Skills | Primary Resources |
+|---|--------|--------|----------------|-------------------|
+| 36 | **Advanced Multi-Step Vuln Chains** | 🔲 | vulnerability-chaining, bb-methodology | H1 disclosed chains |
+| 37 | **Cross-Domain Vulnerability Research** | 🔲 | vulnerability-chaining, bb-methodology | Cross-platform bugs |
+| 38 | **Novel Vulnerability Research Labs** | 🔲 | bb-methodology, bountyforge | 0-day research |
+| 39 | **Hidden Holdout Labs** | 🔲 | bb-methodology, bountyforge | Blind spots |
+| 40 | **Cross-Environment Generalization** | 🔲 | bb-methodology, pentest-engagement | Multi-env testing |
+| 41 | **Mixed-Domain Security Challenges** | 🔲 | vulnerability-chaining | Web+Mobile+Cloud+Web3 |
+| 42 | **Adaptive Weakness-Driven Training** | 🔲 | bb-methodology (What-If) | Adaptive learning |
+| 43 | **Continuous Evaluation & Self-Improvement** | 🔲 | triage-validation, report-writing | Metrics-driven |
+| 44 | **Research-to-Responsible-Disclosure Sim** | 🔲 | report-writing, triage-validation | Full disclosure flow |
+
+---
+
+## PHASE COMPLETION CRITERIA
+
+| Phase | Completion Criteria | Est. Time |
+|-------|---------------------|-----------|
+| **Phase 1: Web** | All 7 apps → can chain 3+ vulns for Critical | 4-6 weeks |
+| **Phase 2: Mobile** | InsecureBankv2 + DIVA 100% + MSTG coverage | 4-6 weeks |
+| **Phase 3: Web3** | 20+ Slither findings, 5+ DeFi exploits, 1 audit report | 6-8 weeks |
+| **Phase 4: Code Review** | 10+ CodeQL/Semgrep custom rules, 3 CVE repros | 4-6 weeks |
+| **Phase 5: Research** | 3+ novel chains documented, 1 responsible disclosure | Ongoing |
+
+---
+
+## MAPPING: YOUR 44 STEPS → UNIFIED SKILLS
+
+| Step Range | Primary Unified Skills | Secondary Skills |
+|------------|----------------------|------------------|
+| 1-7 (Web) | All 13 web unified skills | bb-methodology, bountyforge |
+| 8-18 (Mobile) | MOBILE_PENTESTING_UNIFIED | API_SECURITY, SSRF, AUTH_BYPASS |
+| 19-30 (Web3) | web3-* skills (10 skills) | sast-*, vulnerability-chaining |
+| 31-33 (Code Review) | sast-*, web2-vuln-classes | CodeQL, Semgrep, securecoder-* |
+| 34-35 (CyberGym) | pentest-engagement, pentest-* | All skills (full engagement) |
+| 36-44 (Research) | vulnerability-chaining, bb-methodology, bountyforge | All skills |
+
+---
+
+## COMPLETE MAPPING: PRACTICE APPS → UNIFIED SKILLS (ALL PHASES)
+
+| Unified Skill | Phase 1-7 | Phase 8-18 | Phase 19-30 | Phase 31-33 | Phase 34-44 |
+|---------------|-----------|------------|-------------|-------------|-------------|
+| **SQLI_UNIFIED** | DVWA, Juice Shop, crAPI, WebGoat | — | — | CodeQL queries | Chain sources |
+| **XSS_UNIFIED** | DVWA, Juice Shop, WebGoat, WebSploit | — | — | Semgrep rules | Chain vectors |
+| **IDOR_ACCESS_CONTROL_UNIFIED** | Juice Shop, WebGoat, crAPI | — | — | sast-idor | Cross-domain |
+| **SSRF_UNIFIED** | Juice Shop, WebGoat, WebWolf, crAPI | — | — | sast-ssrf | Cloud metadata chains |
+| **AUTH_BYPASS_2FA_UNIFIED** | Juice Shop, DVWA, WebGoat, crAPI | Mobile auth | — | sast-auth | Multi-factor chains |
+| **FILE_UPLOAD_UNIFIED** | DVWA, Juice Shop, WebGoat | — | — | sast-fileupload | Chain to RCE |
+| **BUSINESS_LOGIC_UNIFIED** | Juice Shop, WebGoat, crAPI | — | DeFi logic | sast-businesslogic | Economic attacks |
+| **RACE_CONDITIONS_UNIFIED** | Juice Shop, crAPI | — | — | sast-rce | Multi-step |
+| **OAUTH_OIDC_UNIFIED** | Juice Shop, crAPI, WebWolf | Mobile auth | Web3 auth | sast-oauth | Cross-domain |
+| **GRAPHQL_UNIFIED** | Juice Shop, WebGoat | — | GraphQL APIs | sast-graphql | Batching chains |
+| **CACHE_POISONING_UNIFIED** | Juice Shop, WebSploit | — | — | sast-cache | Poison chains |
+| **DESERIALIZATION_UNIFIED** | WebGoat, Juice Shop | — | — | sast-deserialization | RCE chains |
+| **MOBILE_PENTESTING_UNIFIED** | — | InsecureBankv2, DIVA, iGoat, Android Labs | — | sast-mobile | Mobile→Cloud chains |
+| **API_SECURITY_UNIFIED** | crAPI, VAmPI, Juice Shop API | Mobile API | — | sast-api | API chains |
+| **AI_LLM_UNIFIED** | — | — | MCP in Web3 | sast-llm | AI→Web chains |
+| **SUPPLY_CHAIN_UNIFIED** | — | — | npm/PyPI in Web3 | sast-supply | Supply→Prod chains |
+| **CLOUD_INFRA_UNIFIED** | — | — | Cloud in Web3 | CloudGoat, K8s | Cloud chains |
+| **RSC_HTTP3_UNIFIED** | Juice Shop (Next.js), custom | — | — | sast-rsc | RSC chains |
+| **VULNERABILITY_CHAINING** | All phases | All phases | All phases | All phases | **CORE SKILL** |
