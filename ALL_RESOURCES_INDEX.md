@@ -216,7 +216,7 @@
 | HackTricks | https://book.hacktricks.xyz/ |
 | PortSwigger Web Security Academy | https://portswigger.net/web-security |
 | Bug Bounty Methodology | https://github.com/0x4rk0/Methodology |
-| BB Methodology (this repo) | /home/aclies/.config/opencode/skills/bb-methodology/SKILL.md |
+| BB Methodology (this repo) | /home/user/.config/opencode/skills/bb-methodology/SKILL.md |
 
 ---
 
@@ -247,10 +247,10 @@
 
 | Skill | Path |
 |-------|------|
-| telegram-intel | /home/aclies/.config/opencode/skills/telegram-intel/TELEGRAM_INTEL.md |
-| github-x-intel | /home/aclies/.config/opencode/skills/github-x-intel/GITHUB_X_INTEL.md |
-| unified-bug-classes (18 skills) | /home/aclies/.config/opencode/skills/unified-bug-classes/ |
-| MASTER_INDEX | /home/aclies/.config/opencode/skills/unified-bug-classes/MASTER_INDEX.md |
+| telegram-intel | /home/user/.config/opencode/skills/telegram-intel/TELEGRAM_INTEL.md |
+| github-x-intel | /home/user/.config/opencode/skills/github-x-intel/GITHUB_X_INTEL.md |
+| unified-bug-classes (18 skills) | /home/user/.config/opencode/skills/unified-bug-classes/ |
+| MASTER_INDEX | /home/user/.config/opencode/skills/unified-bug-classes/MASTER_INDEX.md |
 
 ---
 

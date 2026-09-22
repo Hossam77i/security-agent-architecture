@@ -43,24 +43,24 @@
 ### Core Methodology Skills
 | Skill | Path | Description |
 |-------|------|-------------|
-| **bb-methodology** | `/home/aclies/.config/opencode/skills/bb-methodology/SKILL.md` | Master orchestrator: 5-phase workflow + critical thinking (developer psychology, anomaly detection, What-If experiments) |
-| **bountyforge** | `/home/aclies/.config/opencode/skills/bountyforge/SKILL.md` | All-round bug bounty: smart contracts, web/API, CI/CD, LLM/AI, reporting (7-Question Gate, 4 validation gates) |
-| **offensive-osint** | `/home/aclies/.config/opencode/skills/offensive-osint/SKILL.md` | Authorized external recon: subdomain enum, GraphQL/REST, identity fabric, cloud buckets, CDN/WAF bypass, vendor fingerprinting, CI/CD exposure, secret-scan catalog |
-| **pentest-engagement** | `/home/aclies/.config/opencode/skills/pentest-engagement/SKILL.md` | Professional pentest: WEB mode (apex domains) + NETWORK mode (IPs/CIDRs) |
-| **recon-and-osint** | `/home/aclies/.config/opencode/skills/recon-and-osint/SKILL.md` | Attack surface discovery: subdomains, hosts, endpoints, technologies, exposed services, leaked credentials |
-| **recon-scope-triage** | `/home/aclies/.config/opencode/skills/recon-scope-triage/SKILL.md` | Separate target assets from namespace-collision noise (common word brands) |
-| **report-writing** | `/home/aclies/.config/opencode/skills/report-writing/SKILL.md` | Bug bounty reports for H1/Bugcrowd/Intigriti/Immunefi |
-| **triage-validation** | `/home/aclies/.config/opencode/skills/triage-validation/SKILL.md` | 7-Question Gate, 4 pre-submission gates, always-rejected list, CVSS 3.1 |
-| **vulnerability-chaining** | `/home/aclies/.config/opencode/skills/vulnerability-chaining/SKILL.md` | Combine findings into end-to-end attack paths |
-| **web2-vuln-classes** | `/home/aclies/.config/opencode/skills/web2-vuln-classes/SKILL.md` | 26 web2 bug classes with root causes, detection, bypass tables, exploit techniques |
+| **bb-methodology** | `/home/user/.config/opencode/skills/bb-methodology/SKILL.md` | Master orchestrator: 5-phase workflow + critical thinking (developer psychology, anomaly detection, What-If experiments) |
+| **bountyforge** | `/home/user/.config/opencode/skills/bountyforge/SKILL.md` | All-round bug bounty: smart contracts, web/API, CI/CD, LLM/AI, reporting (7-Question Gate, 4 validation gates) |
+| **offensive-osint** | `/home/user/.config/opencode/skills/offensive-osint/SKILL.md` | Authorized external recon: subdomain enum, GraphQL/REST, identity fabric, cloud buckets, CDN/WAF bypass, vendor fingerprinting, CI/CD exposure, secret-scan catalog |
+| **pentest-engagement** | `/home/user/.config/opencode/skills/pentest-engagement/SKILL.md` | Professional pentest: WEB mode (apex domains) + NETWORK mode (IPs/CIDRs) |
+| **recon-and-osint** | `/home/user/.config/opencode/skills/recon-and-osint/SKILL.md` | Attack surface discovery: subdomains, hosts, endpoints, technologies, exposed services, leaked credentials |
+| **recon-scope-triage** | `/home/user/.config/opencode/skills/recon-scope-triage/SKILL.md` | Separate target assets from namespace-collision noise (common word brands) |
+| **report-writing** | `/home/user/.config/opencode/skills/report-writing/SKILL.md` | Bug bounty reports for H1/Bugcrowd/Intigriti/Immunefi |
+| **triage-validation** | `/home/user/.config/opencode/skills/triage-validation/SKILL.md` | 7-Question Gate, 4 pre-submission gates, always-rejected list, CVSS 3.1 |
+| **vulnerability-chaining** | `/home/user/.config/opencode/skills/vulnerability-chaining/SKILL.md` | Combine findings into end-to-end attack paths |
+| **web2-vuln-classes** | `/home/user/.config/opencode/skills/web2-vuln-classes/SKILL.md` | 26 web2 bug classes with root causes, detection, bypass tables, exploit techniques |
 
 ### Specialized Skills (Loaded This Session)
 | Skill | Path | Description |
 |-------|------|-------------|
-| **ine-rdp-lab** | `/home/aclies/.config/opencode/skills/ine-rdp-lab/SKILL.md` | INE lab operator: terminal channel, OCR pipeline, flag verification, mobile playbook |
-| **telegram-intel** | `/home/aclies/.config/opencode/skills/telegram-intel/TELEGRAM_INTEL.md` | 8 Telegram channels curated |
-| **github-x-intel** | `/home/aclies/.config/opencode/skills/github-x-intel/GITHUB_X_INTEL.md` | GitHub repos, X accounts, H1 reports, writeups |
-| **unified-bug-classes** (18 skills) | `/home/aclies/.config/opencode/skills/unified-bug-classes/` | Merged references for each vuln class |
+| **ine-rdp-lab** | `/home/user/.config/opencode/skills/ine-rdp-lab/SKILL.md` | INE lab operator: terminal channel, OCR pipeline, flag verification, mobile playbook |
+| **telegram-intel** | `/home/user/.config/opencode/skills/telegram-intel/TELEGRAM_INTEL.md` | 8 Telegram channels curated |
+| **github-x-intel** | `/home/user/.config/opencode/skills/github-x-intel/GITHUB_X_INTEL.md` | GitHub repos, X accounts, H1 reports, writeups |
+| **unified-bug-classes** (18 skills) | `/home/user/.config/opencode/skills/unified-bug-classes/` | Merged references for each vuln class |
 
 ---
 
@@ -247,10 +247,10 @@
 ### Skills Created This Session
 | Skill | Path |
 |-------|------|
-| telegram-intel | `/home/aclies/.config/opencode/skills/telegram-intel/TELEGRAM_INTEL.md` |
-| github-x-intel | `/home/aclies/.config/opencode/skills/github-x-intel/GITHUB_X_INTEL.md` |
-| unified-bug-classes (18 skills) | `/home/aclies/.config/opencode/skills/unified-bug-classes/` |
-| MASTER_INDEX | `/home/aclies/.config/opencode/skills/unified-bug-classes/MASTER_INDEX.md` |
+| telegram-intel | `/home/user/.config/opencode/skills/telegram-intel/TELEGRAM_INTEL.md` |
+| github-x-intel | `/home/user/.config/opencode/skills/github-x-intel/GITHUB_X_INTEL.md` |
+| unified-bug-classes (18 skills) | `/home/user/.config/opencode/skills/unified-bug-classes/` |
+| MASTER_INDEX | `/home/user/.config/opencode/skills/unified-bug-classes/MASTER_INDEX.md` |
 
 ---
 
@@ -262,4 +262,4 @@ Key skill categories:
 - **Core Methodology** (10): bb-methodology, bountyforge, offensive-osint, pentest-engagement, recon-and-osint, recon-scope-triage, report-writing, triage-validation, vulnerability-chaining, web2-vuln-classes
 - **INE Labs** (1): ine-rdp-lab
 - **New Intelligence** (3): telegram-intel, github-x-intel, unified-bug-classes (18)
-- **Specialized** (170+): All skills in `/home/aclies/.config/opencode/skills/` covering web, mobile, API, cloud, AI/LLM, crypto, supply chain, red team, blue team, etc.
+- **Specialized** (170+): All skills in `/home/user/.config/opencode/skills/` covering web, mobile, API, cloud, AI/LLM, crypto, supply chain, red team, blue team, etc.

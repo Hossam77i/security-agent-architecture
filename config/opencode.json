@@ -19,7 +19,7 @@
     },
     "brave": {
       "type": "local",
-      "command": ["npx", "-y", "@playwright/mcp@latest", "--executable-path", "/opt/brave.com/brave/brave-browser", "--no-sandbox", "--user-data-dir", "/home/aclies/.config/BraveSoftware/Brave-Browser"],
+      "command": ["npx", "-y", "@playwright/mcp@latest", "--executable-path", "/opt/brave.com/brave/brave-browser", "--no-sandbox", "--user-data-dir", "/home/user/.config/BraveSoftware/Brave-Browser"],
       "enabled": false
     },
     "chrome": {
@@ -29,7 +29,7 @@
     },
     "firefox": {
       "type": "local",
-      "command": ["npx", "-y", "@playwright/mcp@latest", "--browser", "firefox", "--no-sandbox", "--user-data-dir", "/home/aclies/.mozilla/firefox"],
+      "command": ["npx", "-y", "@playwright/mcp@latest", "--browser", "firefox", "--no-sandbox", "--user-data-dir", "/home/user/.mozilla/firefox"],
       "enabled": false
     }
   },
