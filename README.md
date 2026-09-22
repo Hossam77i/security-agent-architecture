@@ -1,4 +1,4 @@
-![Horus Eye Security Agent Logo](logo.jpg)
+![Horus Eye Security Agent Logo](horus_logo.jpg)
 
 # Horus Eye - Security Agent Architecture
 
