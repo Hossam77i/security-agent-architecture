@@ -1,154 +1,456 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RA SECURITY - Architecture & Research</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:,">
+<title>ASRP Security Agent V2 — System Architecture</title>
+<style>
+  :root{--bg:#f6f7f9;--panel:#ffffff;--line:#e2e8f0;--line2:#cbd5e1;
+    --txt:#1e293b;--dim:#64748b;--accent:#1e3a5f;--accent2:#2563eb;}
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--txt);margin:0;padding:0;font-size:15px;
+    -webkit-font-smoothing:antialiased}
+  header.mast{background:var(--accent);color:#fff;padding:34px 32px 26px}
+  header.mast .wrap{max-width:1400px;margin:0 auto}
+  header.mast .kicker{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+    color:#b9c7dd;margin-bottom:8px}
+  header.mast h1{margin:0;font-size:1.7rem;font-weight:650;letter-spacing:-.01em}
+  header.mast p{margin:10px 0 0;color:#cdd8e8;font-size:.92rem;max-width:900px;line-height:1.55}
+  dl.meta{display:flex;gap:0;flex-wrap:wrap;margin:18px 0 0;padding:0;border:1px solid #ffffff2e;
+    border-radius:6px;overflow:hidden;max-width:1000px}
+  dl.meta div{padding:8px 16px;border-right:1px solid #ffffff2e;min-width:130px}
+  dl.meta div:last-child{border-right:none}
+  dl.meta dt{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#9fb0c9;margin-bottom:2px}
+  dl.meta dd{margin:0;font-size:.86rem;font-weight:600}
+  nav.tabs{background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+  nav.tabs .wrap{max-width:1400px;margin:0 auto;padding:0 32px;display:flex;gap:4px;flex-wrap:wrap}
+  nav.tabs button{background:none;border:none;border-bottom:2px solid transparent;
+    padding:14px 14px 12px;cursor:pointer;font-size:.87rem;color:var(--dim);font-weight:550}
+  nav.tabs button:hover{color:var(--txt)}
+  nav.tabs button.active{color:var(--accent);border-bottom-color:var(--accent)}
+  nav.tabs input{margin:8px 0 8px auto;border:1px solid var(--line2);border-radius:6px;
+    padding:7px 12px;min-width:230px;font-size:.85rem;color:var(--txt);background:#fbfcfe}
+  main{max-width:1400px;margin:0 auto;padding:20px 32px 70px}
+  .tab{display:none}.tab.active{display:block}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin:4px 0 12px;font-size:.76rem;color:var(--dim)}
+  .legend span i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px}
+  #mapwrap{display:flex;gap:16px;align-items:stretch}
+  #canvas{flex:3;background:var(--panel);border:1px solid var(--line);border-radius:8px;
+    height:70vh;min-height:480px;overflow:hidden;cursor:grab;position:relative}
+  #canvas svg{width:100%;height:100%}
+  .edge{stroke:#b9c4d0;stroke-width:1.5;fill:none}
+  .edge.flow{stroke:#5b7fa6;stroke-dasharray:6 4;animation:dash 1.2s linear infinite}
+  @keyframes dash{to{stroke-dashoffset:-10}}
+  .edgeLbl{fill:#8494a9;font-size:9px}
+  .colhead{font-size:10px;font-weight:700;letter-spacing:.12em}
+  .node{cursor:pointer}
+  .node rect.card{stroke:#c3ccd6;stroke-width:1.5}
+  .node text{fill:#0f172a;font-size:11px;font-weight:600;pointer-events:none}
+  .node .sub{fill:#64748b;font-size:9px;font-weight:400}
+  .node.sel rect.card{stroke:var(--accent);stroke-width:3}
+  .node.dim{opacity:.22}
+  #detail{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:8px;
+    padding:20px 20px;min-width:290px;max-width:340px;max-height:70vh;overflow:auto}
+  #detail .tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.1em;
+    text-transform:uppercase;border-radius:4px;padding:3px 9px;margin-bottom:10px;color:#fff}
+  #detail h3{margin:0 0 2px;font-size:1.12rem;letter-spacing:-.01em}
+  #detail .fileline{font-size:.76rem;color:var(--dim);margin-bottom:10px}
+  #detail h4{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
+    margin:14px 0 6px;border-top:1px solid var(--line);padding-top:12px}
+  #detail p{font-size:.85rem;line-height:1.6;color:#334155;margin:0}
+  #detail code{background:#f1f5f9;border:1px solid var(--line);border-radius:4px;
+    padding:1px 6px;font-size:.74rem;color:#0f766e}
+  #loopbar{display:flex;align-items:center;gap:10px;margin:6px 0 14px;flex-wrap:wrap}
+  #loopbar button{background:var(--panel);border:1px solid var(--line2);border-radius:6px;
+    padding:8px 18px;cursor:pointer;font-size:.85rem;font-weight:600;color:var(--accent)}
+  #loopbar button:hover{border-color:var(--accent)}
+  #prog{flex:1;min-width:160px;height:8px;background:#e8edf3;border-radius:4px;overflow:hidden}
+  #progfill{height:100%;width:0;background:var(--accent)}
+  #cnt{color:var(--dim);font-size:.83rem;font-variant-numeric:tabular-nums}
+  #stepbox{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px 26px}
+  #stepbox h2{margin:0;font-size:1.2rem;letter-spacing:-.01em}
+  #stepbox h2 small{color:var(--dim);font-weight:400}
+  #stepbox p{color:#334155;line-height:1.6;font-size:.9rem}
+  #steplist{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+  #steplist span{font-size:.72rem;background:#f1f5f9;border:1px solid var(--line);
+    border-radius:12px;padding:3px 10px;cursor:pointer;color:var(--dim)}
+  #steplist span.done{background:#eef6ec;color:#3f6212;border-color:#d3e4cb}
+  #steplist span.cur{background:var(--accent);color:#fff;border-color:var(--accent)}
+  table{width:100%;border-collapse:collapse;margin-top:6px;font-size:.83rem;background:var(--panel)}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
+    position:sticky;top:53px;background:var(--panel)}
+  td code{color:#0f766e;font-size:.76rem;background:#f1f5f9;padding:1px 5px;border-radius:4px}
+  tr.hide{display:none}
+  tbody tr:hover{background:#f8fafc}
+  .doc{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+    padding:20px 24px;margin-top:16px}
+  .doc h2{margin:0 0 10px;font-size:1.02rem}
+  .doc li{color:#334155;line-height:1.65;font-size:.87rem;margin-bottom:4px}
+  .doc code{background:#f1f5f9;border:1px solid var(--line);border-radius:4px;
+    padding:1px 6px;font-size:.76rem;color:#0f766e}
+  .imm{color:#b91c1c;font-weight:600}
+  footer{border-top:1px solid var(--line);color:#94a3b8;font-size:.76rem;text-align:center;
+    padding:22px;background:var(--panel)}
+  @media (max-width:900px){#mapwrap{flex-direction:column}#detail{max-width:none}}
+</style>
 </head>
 <body>
-    <header class="hero">
-        <div class="container">
-            <h1>RA SECURITY</h1>
-            <p class="tagline">An evolving architectural framework for long-running, autonomous cybersecurity agents.</p>
-            <div class="links">
-                <a href="https://github.com/Hossam77i/security-agent-architecture" class="btn">View on GitHub</a>
-                <a href="#interactive-architecture" class="btn btn-outline">Explore Architecture</a>
-            </div>
-        </div>
-    </header>
-
-    <nav class="sticky-nav">
-        <div class="container">
-            <a href="#why">Why it Exists</a>
-            <a href="#problem-space">Agent Problems</a>
-            <a href="#principles">Design Principles</a>
-            <a href="#interactive-architecture">Architecture</a>
-            <a href="#evaluation">Evaluation</a>
-            <a href="#docs">Documentation</a>
-        </div>
-    </nav>
-
-    <main class="container">
-        
-        <section id="why">
-            <h2>Why This Exists</h2>
-            <p>General-purpose LLM agents are highly capable but fail in deep security workflows due to context collapse, reasoning fixation, and unsafe execution. <strong>RA SECURITY</strong> introduces strict architectural boundaries—separating reasoning, planning, memory, and execution—to solve these problems fundamentally.</p>
-        </section>
-
-        <section id="problem-space">
-            <h2>Agent Problem Space</h2>
-            <p class="desc">Interactive taxonomy of 60+ engineering challenges. Click categories to expand.</p>
-            <div class="problems-grid" id="problem-cards">
-                <!-- Populated by JS -->
-            </div>
-            <a href="../docs/research/agent-problems.md" class="read-more">Read Full Taxonomy →</a>
-        </section>
-
-        <section id="principles">
-            <h2>Design Principles</h2>
-            <ul class="principles-list">
-                <li><strong>Capability ≠ Authority:</strong> The LLM proposes intent; policies dictate execution.</li>
-                <li><strong>Experience → Knowledge:</strong> Memories are distilled, not just appended.</li>
-                <li><strong>Token Efficiency:</strong> Compute is optimized; unnecessary loops are blocked.</li>
-                <li><strong>Deterministic Safety:</strong> Security boundaries exist outside the LLM.</li>
-            </ul>
-        </section>
-
-        <section id="interactive-architecture">
-            <h2>Interactive Architecture Flow</h2>
-            <p class="desc">Click any node to view its purpose, inputs, outputs, and security considerations.</p>
-            
-            <div class="arch-container">
-                <div class="diagram-area">
-                    <div class="mermaid">
-flowchart TD
-    %% Cognitive Flow
-    classDef cognitive fill:#1a237e,stroke:#5c6bc0,stroke-width:2px,color:#fff;
-    %% Control Flow
-    classDef control fill:#b71c1c,stroke:#ef5350,stroke-width:2px,color:#fff;
-    %% Learning Flow
-    classDef learning fill:#1b5e20,stroke:#66bb6a,stroke-width:2px,color:#fff;
-    
-    USER[User / Task] --> ORCH[Orchestrator]
-    
-    subgraph Cognitive ["Cognitive Flow"]
-        ORCH --> REASON[Reasoning Layer]
-        REASON --> PLAN[Planning Layer]
-        PLAN --> MEM[Memory / Knowledge]
-        MEM -.-> REASON
-    end
-    
-    subgraph Control ["Control Flow"]
-        PLAN --> GATE[Tool Gateway / Policy]
-        GATE --> EXEC[Execution Sandbox]
-    end
-    
-    subgraph Learning ["Learning & Observation Flow"]
-        EXEC --> OBS[Observation Layer]
-        OBS --> EVAL[Evaluation Layer]
-        EVAL --> LEARN[Learning Engine]
-        LEARN -.-> MEM
-        OBS -.-> REASON
-    end
-
-    class USER,ORCH,REASON,PLAN,MEM cognitive;
-    class GATE,EXEC control;
-    class OBS,EVAL,LEARN learning;
-    
-    click USER "javascript:showNodeData('user')"
-    click ORCH "javascript:showNodeData('orch')"
-    click REASON "javascript:showNodeData('reason')"
-    click PLAN "javascript:showNodeData('plan')"
-    click MEM "javascript:showNodeData('mem')"
-    click GATE "javascript:showNodeData('gate')"
-    click EXEC "javascript:showNodeData('exec')"
-    click OBS "javascript:showNodeData('obs')"
-    click EVAL "javascript:showNodeData('eval')"
-    click LEARN "javascript:showNodeData('learn')"
-                    </div>
-                </div>
-                <div class="info-panel" id="info-panel">
-                    <h3>Select a node</h3>
-                    <p>Click on any component in the diagram to explore its architectural details.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="evaluation">
-            <h2>Evaluation & Efficiency</h2>
-            <div class="grid-2">
-                <div class="card">
-                    <h3>Token Efficiency</h3>
-                    <p>Token optimization is a first-class metric. By using the Context Manager, we drastically reduce <strong>Repeated Context Injection</strong> and enforce strict limits on tool loops.</p>
-                </div>
-                <div class="card">
-                    <h3>Evaluation Methodology</h3>
-                    <p>Independent State-Transition checks prevent <strong>False Success</strong>. Regression testing ensures prompt updates do not degrade the agent's baseline capabilities.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="docs">
-            <h2>Documentation & Resources</h2>
-            <div class="grid-3">
-                <a href="https://github.com/Hossam77i/security-agent-architecture" class="doc-link">GitHub Repository</a>
-                <a href="../docs/architecture/system-architecture.md" class="doc-link">System Architecture</a>
-                <a href="../docs/research/agent-problems.md" class="doc-link">Agent Problems Taxonomy</a>
-                <a href="../docs/research/problem-coverage.md" class="doc-link">Problem Coverage Matrix</a>
-                <a href="../docs/security/threat-model.md" class="doc-link">Threat Model</a>
-                <a href="../docs/architecture/decisions/ADR-001-llm-not-architecture.md" class="doc-link">Architecture Decisions (ADRs)</a>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>RA SECURITY - Autonomous Security Agent Architecture</p>
-        </div>
-    </footer>
-
-    <script src="js/app.js"></script>
+<header class="mast"><div class="wrap">
+  <div class="kicker">Autonomous Security Research Platform · Technical Documentation</div>
+  <h1>Security Agent V2 — System Architecture</h1>
+  <p>How the agent works, module by module: mission control, reasoning, execution,
+     knowledge, verification, and controlled self-improvement. Select any component
+     in the diagram for its specification, implementation files, and usage.</p>
+  <dl class="meta">
+    <div><dt>Version</dt><dd>2.0</dd></div>
+    <div><dt>Date</dt><dd>2026-09-18</dd></div>
+    <div><dt>Status</dt><dd>Implemented</dd></div>
+    <div><dt>Tests</dt><dd>45 / 45 passing</dd></div>
+    <div><dt>Corpus</dt><dd>32,776 + 500 eval</dd></div>
+    <div><dt>Workers / Skills / Modes</dt><dd>8 · 14 · 6</dd></div>
+  </dl>
+</div></header>
+<nav class="tabs"><div class="wrap">
+  <button data-tab="map" class="active">System Map</button>
+  <button data-tab="loop">Operating Loop</button>
+  <button data-tab="mods">Module Registry</button>
+  <button data-tab="safe">Safety &amp; Data</button>
+  <input id="q" placeholder="Filter components / modules…">
+</div></nav>
+<main>
+<!-- ============ SYSTEM MAP ============ -->
+<section id="tab-map" class="tab active">
+  <div class="legend" id="legend"></div>
+  <div id="mapwrap">
+    <div id="canvas"><svg id="svg" role="img" aria-label="ASRP architecture diagram"></svg></div>
+    <aside id="detail"><h3>Component detail</h3>
+      <p style="font-size:.85rem;color:var(--dim)">Select a component in the diagram.
+      Solid edges carry control and data; dashed edges carry feedback and learning.
+      Scroll to zoom, drag to pan.</p></aside>
+  </div>
+</section>
+<!-- ============ LOOP ============ -->
+<section id="tab-loop" class="tab">
+  <div id="loopbar">
+    <button id="prev">Previous</button>
+    <button id="next">Next</button>
+    <button id="play">Play</button>
+    <div id="prog"><div id="progfill"></div></div>
+    <span id="cnt"></span>
+  </div>
+  <div id="stepbox"><h2 id="stitle"></h2><p id="sdesc"></p>
+    <p style="font-size:.8rem;color:var(--dim)">Enforcing component: <code id="sgate"></code></p>
+    <div id="steplist"></div></div>
+</section>
+<!-- ============ MODULES ============ -->
+<section id="tab-mods" class="tab">
+  <table id="modtable"><thead><tr><th>Module</th><th>Layer</th><th>Responsibility</th><th>Interface</th></tr></thead>
+  <tbody></tbody></table>
+</section>
+<!-- ============ SAFETY ============ -->
+<section id="tab-safe" class="tab">
+  <div class="doc"><h2>1. Safety architecture (immutable)</h2><ul>
+    <li><b>Preflight first.</b> No execution without objective, target, explicit authorization, and defined scope.</li>
+    <li><b>Hard scope.</b> Every action is checked by <code>scope.check_action</code>; ambiguous scope halts the mission. Scope is never expanded unilaterally.</li>
+    <li><b>Authorized research only.</b> Local environments, intentionally vulnerable applications, CTFs, labs, and explicitly authorized programs.</li>
+    <li><b>Secrets.</b> Metadata only; values are redacted in prompts, logs, memory, reports, and version control.</li>
+    <li><b>Untrusted content is data.</b> Tool output and external content cannot modify policy, scope, credentials, or autonomy.</li>
+    <li><span class="imm">Evolution cannot weaken</span> <code>scope.py</code>, <code>creds.py</code>, <code>redaction.py</code>, <code>injection.py</code>, or <code>preflight.py</code> — proposals touching them are blocked automatically.</li>
+    <li><b>Disclosure gate.</b> Vendor contact, CVE filing, and publication require human approval.</li>
+  </ul></div>
+  <div class="doc"><h2>2. Memory, knowledge, and compute</h2><ul>
+    <li><b>Memory levels.</b> L0 current context, L1 task state, L2 knowledge, L3 history, L4 raw evidence. Top-k retrieval only; full dumps never enter context.</li>
+    <li><b>Corpus.</b> 32,776 training reports plus 500 held-out evaluations (hash split, zero leakage), indexed with sqlite FTS5 and metadata filters. Retrieval hits are priors, never proof.</li>
+    <li><b>Compute budgets.</b> LOW 8k, MEDIUM 60k, HIGH 200k tokens by task class. Capability gain per token is tracked; correctness is never traded for token savings.</li>
+    <li><b>Mastery standard.</b> A capability is rated strong only with evidence across understanding, application, novel problems, transfer, adversarial variants, verification, and consistency.</li>
+  </ul></div>
+  <div class="doc"><h2>3. Command reference (project root: <code>sec-research-platform/</code>)</h2><ul>
+    <li><code>python3 -m asrp preflight --objective "…" --target "lab/x" --authorized --scope "lab/*"</code></li>
+    <li><code>python3 -m asrp v2 loop --mode ctf</code> · <code>v2 baseline</code> · <code>graph recommend</code></li>
+    <li><code>python3 -m asrp corpus query --query "idor" --top-k 5</code></li>
+    <li><code>python3 -m pytest tests/ -q</code> — the suite must remain fully green</li>
+  </ul></div>
+</section>
+</main>
+<footer>ASRP V2 · Version 2.0 · Single-file offline document · Generated from the audited codebase</footer>
+<script>
+"use strict";
+/* ================= DATA ================= */
+const LAYERS=[
+ {id:"entry",label:"ENTRY",color:"#7c8aa0",tint:"#eef1f4",x:70},
+ {id:"core",label:"CORE",color:"#4c6488",tint:"#e9eef5",x:230},
+ {id:"reason",label:"REASONING",color:"#4a7fb5",tint:"#e8f1f9",x:410},
+ {id:"exec",label:"EXECUTION",color:"#a97c46",tint:"#f8f1e5",x:600},
+ {id:"know",label:"KNOWLEDGE",color:"#3f8f86",tint:"#e7f3f1",x:790},
+ {id:"learn",label:"VERIFY / LEARN",color:"#7a9a4d",tint:"#eff4e6",x:970},
+ {id:"evolve",label:"EVOLVE",color:"#96705a",tint:"#f3ece5",x:1150},
+ {id:"obs",label:"OBSERVE",color:"#6e8898",tint:"#edf1f4",x:1330}];
+const NODES=[
+ {id:"mission",layer:"entry",label:"Mission Spec",sub:"constitution.py",y:60,
+  d:"Every substantial task starts with a contract: objective, scope, constraints, success criteria, evidence requirements, stop conditions, and resource budget. The agent knows what success means before acting.",
+  f:["asrp/constitution.py"],c:["make_mission(obj, scope, …)"]},
+ {id:"preflight",layer:"entry",label:"Preflight",sub:"preflight.py · immutable",y:170,
+  d:"Validates objective, target, explicit authorization, scope, and tools before anything runs. Blocked missions stop here with printed blockers.",
+  f:["asrp/preflight.py"],c:["asrp preflight --objective … --authorized --scope …"]},
+ {id:"scope",layer:"entry",label:"Scope Gate",sub:"scope.py · immutable",y:280,
+  d:"Hard allowlist of targets, excluded patterns, permitted and prohibited actions, expiry, and kill switch. check_action() runs on every action — ambiguous scope stops the mission.",
+  f:["asrp/scope.py"],c:["scope_mod.check_action(sc, target, action)"]},
+ {id:"orch",layer:"core",label:"Orchestrator",sub:"orchestrator.py",y:110,
+  d:"Owns the world model and mission phase. Dispatches minimal structured context (task plus top-3 memory hints) to workers at depth ≤ 1 — workers can never spawn workers. Every dispatch passes scope, info-gain, and watchdog gates.",
+  f:["asrp/orchestrator.py","asrp/state.py"],c:["asrp start --objective … --target …"]},
+ {id:"router",layer:"core",label:"Model Router",sub:"models.py",y:250,
+  d:"Task-based routing across local, free, and pro models. Verification prefers a different model and configuration than discovery — independent review of every finding.",
+  f:["asrp/models.py"],c:[]},
+ {id:"looprun",layer:"core",label:"Loop Runner",sub:"loop.py · 6 modes",y:370,
+  d:"The 25-step operating loop (mission through improve) as a state machine. Hunting, pentest, CTF, research, learning, and analysis modes share one reasoning core and differ only in mission, workflow, tools, and evaluation.",
+  f:["asrp/loop.py"],c:["asrp v2 loop --mode ctf"]},
+ {id:"research",layer:"reason",label:"Research",sub:"research.py · sources.py",y:40,
+  d:"Observe, research, compare sources, update the mental model, then hypothesize. Sources are ranked across ten reliability tiers; conflicting claims are both preserved until a stronger source settles them.",
+  f:["asrp/research.py","asrp/sources.py"],c:["research.build_queries(obj)"]},
+ {id:"hypo",layer:"reason",label:"Hypotheses",sub:"hypotheses.py",y:150,
+  d:"First-class H1/H2/H3 objects with supporting and contradicting evidence, assumptions, expected versus disqualifying results, and next tests. The agent must actively seek evidence that could disprove its preferred hypothesis.",
+  f:["asrp/hypotheses.py"],c:["asrp hypothesis propose --mission … --claim …"]},
+ {id:"alt",layer:"reason",label:"Alternatives",sub:"alternatives.py",y:260,
+  d:"Multiple plausible approaches ranked by expected information gain per cost, with a risk penalty. Failures are diagnosed before switching — approaches are never abandoned at random.",
+  f:["asrp/alternatives.py","asrp/info_gain.py","asrp/reasoning.py"],c:[]},
+ {id:"ready",layer:"reason",label:"Readiness Gate",sub:"readiness.py",y:370,
+  d:"Pre-execution check with structured states: Ready, Partially Ready, Insufficient Evidence, High Uncertainty, Blocked. Experiments are recorded as question, test, expected, observed, and decision.",
+  f:["asrp/readiness.py"],c:["asrp readiness --known … --authorized --hypotheses 2 --verify"]},
+ {id:"workers",layer:"exec",label:"9 Workers",sub:"depth ≤ 1",y:80,
+  d:"Research, discovery, web/API, code, vulnerability research, verifier, evidence, reporter, and memory-learning workers. Minimal context in, structured results out. Bounded retries; a stuck watchdog forces a strategy change.",
+  f:[".opencode/agents/asrp-*.md"],c:[]},
+ {id:"tools",layer:"exec",label:"Tool Gateway",sub:"capabilities.py",y:210,
+  d:"Capability registry recording provider, purpose, risk, timeout, and authentication schema per tool. Raw output is isolated as untrusted content before parsing into safe structured data.",
+  f:["asrp/capabilities.py","asrp/injection.py · immutable"],c:["capabilities.select('web traffic')"]},
+ {id:"caps",layer:"exec",label:"14 Skills",sub:"skill_registry.py",y:330,
+  d:"On-demand loading: metadata in context, full content lazily. Covers critical thinking, research search, reconnaissance, web/API analysis, authentication, code security, threat modeling, verification, reporting, and failure learning.",
+  f:["asrp/skill_registry.py",".opencode/skills/*/SKILL.md"],c:[]},
+ {id:"memory",layer:"know",label:"Memory L0–L4",sub:"memory.py",y:60,
+  d:"L0 context, L1 task state, L2 knowledge, L3 history, L4 evidence. Top-k retrieval only — full dumps never enter context. Stores what should affect future decisions, not everything that happened.",
+  f:["asrp/memory.py","asrp/memory_qc.py","asrp/context.py"],c:[]},
+ {id:"graph",layer:"know",label:"Capability Graph",sub:"capability_graph.py",y:180,
+  d:"Dependency-aware capability map from Unknown to Mastered. Advanced training stays locked until prerequisites reach Applied. A single piece of evidence advances at most one level — one success is never mastery.",
+  f:["asrp/capability_graph.py"],c:["asrp graph recommend"]},
+ {id:"corpus",layer:"know",label:"Corpus 33k",sub:"asrp/corpus/",y:300,
+  d:"33,276 gold reports (advisories, NVD, KEV, ExploitDB), deduplicated with a 38-class taxonomy, chain extraction, 96k semantic chunks, and hybrid FTS retrieval. 500 held-out evaluations with zero leakage.",
+  f:["asrp/corpus/","schemas/corpus_report.json"],c:["asrp corpus query --query … --top-k 5"]},
+ {id:"knowreg",layer:"know",label:"Knowledge Registry",sub:"knowledge_registry.py",y:410,
+  d:"Every item carries source, provenance, date, confidence, applicability, and validation status (new, validated, useful, generalized — or flagged for revalidation, deprecated, contradicted).",
+  f:["asrp/knowledge_registry.py"],c:["asrp v2 seed"]},
+ {id:"evidence",layer:"learn",label:"Evidence",sub:"evidence.py · claims.py",y:40,
+  d:"Immutable evidence records labeled fact, observation, inference, or hypothesis. Verification asks four questions: reproducible, alternative explanations ruled out, impact demonstrated, already known.",
+  f:["asrp/evidence.py","asrp/claims.py","asrp/verification.py"],c:[]},
+ {id:"chains",layer:"learn",label:"Chains",sub:"chains.py · novelty.py",y:150,
+  d:"Findings linked into attack paths — weakness, impact, new access, new surface, next weakness, escalated impact — each step citing target evidence. Novelty checks separate new vulnerabilities from known issues.",
+  f:["asrp/chains.py","asrp/novelty.py"],c:[]},
+ {id:"fail",layer:"learn",label:"Failures",sub:"failures.py · learning.py",y:260,
+  d:"Fourteen-category taxonomy (wrong hypothesis, enumeration gap, verification failure, and others). Pipeline: classify, root cause, correction, retry or replan, verify the fix, generalize. Retrying a failed approach without new evidence is blocked.",
+  f:["asrp/failures.py","asrp/learning.py"],c:["asrp v2 fail"]},
+ {id:"reflect",layer:"learn",label:"Reflection",sub:"reflection.py",y:370,
+  d:"Twelve-question post-task review (what worked, what failed, why, what to train next) stored as structured lessons. Methodology audits flag patterns repeating three or more times for targeted retraining.",
+  f:["asrp/reflection.py"],c:["asrp v2 method-audit"]},
+ {id:"train",layer:"evolve",label:"Practice",sub:"practice.py · training.py",y:60,
+  d:"Deliberate-practice modules target weak capabilities; transfer runs (variant, different technology, novel, adversarial) prove generalization rather than memorization. Evaluation sets stay separate from training memory.",
+  f:["asrp/practice.py","asrp/training.py"],c:[]},
+ {id:"eval",layer:"evolve",label:"Evaluation",sub:"evaluation.py",y:170,
+  d:"Scores technical outcome plus process quality (research, alternatives, verification, recovery), generalization, efficiency, and reliability — across unseen, regression, transfer, and adversarial suites.",
+  f:["asrp/evaluation.py"],c:["asrp eval-demo --suite …"]},
+ {id:"budget",layer:"evolve",label:"Budgets",sub:"reflection.py",y:280,
+  d:"LOW 8k, MEDIUM 60k, and HIGH 200k token budgets by task class. Tracks capability gain per token and detects waste (repetition, duplicate retrieval, low-value loops). Correctness is never traded for tokens.",
+  f:["asrp/reflection.py","asrp/tokens.py"],c:["asrp v2 budget"]},
+ {id:"evol",layer:"evolve",label:"Evolution",sub:"evolution.py · meta.py",y:390,
+  d:"Improvements follow proposal, candidate, sandbox, evaluation, regression, approval or rollback — with a version log. Meta-learning measures which methods actually transfer. Safety files are untouchable by construction.",
+  f:["asrp/evolution.py","asrp/meta.py","asrp/mastery.py"],c:["asrp v2 meta / mastery"]},
+ {id:"jobs",layer:"obs",label:"Jobs",sub:"jobs.py · watchdog.py",y:80,
+  d:"Checkpoints, stuck detection, and mission recovery across restarts. Watchdog findings require a strategy change rather than blind retries.",
+  f:["asrp/jobs.py","asrp/watchdog.py"],c:["asrp recover --mission …"]},
+ {id:"logs",layer:"obs",label:"Audit Trail",sub:"observability.py",y:190,
+  d:"Decision-level telemetry (decisions, claims, token usage) with secrets redacted — sufficient for later methodology analysis without hidden reasoning transcripts.",
+  f:["asrp/observability.py","asrp/decisions.py"],c:[]},
+ {id:"report",layer:"obs",label:"Report",sub:"reporting.py",y:300,
+  d:"Findings packaged with evidence, impact, and remediation, progressing from candidate to human review. No vendor contact, CVE filing, or disclosure without human approval.",
+  f:["asrp/reporting.py","asrp/creds.py · immutable","asrp/redaction.py · immutable"],c:[]}
+];
+const EDGES=[
+ ["mission","preflight","contract"],["preflight","scope","authorized?"],["scope","orch","hard gate"],
+ ["orch","router","route",1],["router","orch","",1],["orch","looprun","phase",1],
+ ["orch","hypo","hypothesize"],["hypo","alt","rank"],["alt","ready","select"],
+ ["ready","orch","READY",1],["research","hypo","evidence"],
+ ["orch","workers","minimal ctx"],["workers","orch","results",1],
+ ["orch","tools","request"],["tools","orch","safe data",1],
+ ["orch","caps","load"],["memory","orch","top-k",1],["orch","memory","checkpoint",1],
+ ["graph","train","weakness"],["research","corpus","prior art",1],["corpus","research","HYPOTHESIS",1],
+ ["workers","evidence","observe"],["evidence","chains","link"],["chains","fail","refute?"],
+ ["fail","reflect","lesson"],["reflect","graph","update",1],["reflect","memory","store",1],
+ ["train","eval","attempt"],["eval","evol","promote?",1],["evol","train","next task",1],
+ ["budget","orch","limits",1],["orch","jobs","run",1],["orch","logs","log",1],
+ ["evidence","report","package"],["report","evol","version",1]
+];
+const STEPS=[
+ ["mission","Write the contract","Objective, scope, constraints, success criteria, evidence rules, stop conditions, budget — before any action.","constitution.make_mission"],
+ ["understand","Understand","Restate the problem; separate known, unknown, and assumptions.","orchestrator + state"],
+ ["scope_check","Check scope","Authorization and allowlist confirmed; ambiguous scope stops the mission.","scope.check_action"],
+ ["research","Research first","Query documentation, advisories, and source; tier sources; preserve conflicts.","research + sources"],
+ ["observe","Observe","Collect target-side observations; label fact versus inference.","evidence"],
+ ["model","Build mental model","Current picture of the system and its trust boundaries.","orchestrator world-model"],
+ ["hypothesize","Generate hypotheses","At least two rival hypotheses with expected and disqualifying results.","hypotheses.propose"],
+ ["alternatives","Generate alternatives","Rank approaches by information gain per cost, risk-penalized.","alternatives.propose_paths"],
+ ["gaps","Identify information gaps","Determine which missing fact would decide between hypotheses.","readiness.check"],
+ ["plan","Plan","The smallest safe experiment with the largest useful information.","info_gain.pick_next"],
+ ["readiness","Readiness gate","Ready, Partially Ready, Insufficient Evidence, High Uncertainty, or Blocked.","readiness.check"],
+ ["execute","Execute","Single-level worker dispatch; minimal context; scope-checked.","orchestrator.dispatch"],
+ ["observe_results","Observe results","Record raw output as immutable evidence.","evidence"],
+ ["verify","Verify","Reproduce independently; rule out alternative explanations; demonstrate impact.","verification.verify"],
+ ["replan?","Replan","Diagnose the failure category before switching approach.","failures.classify"],
+ ["solve","Solve","Claim only what target evidence supports.","claims"],
+ ["reflect","Reflect","Twelve questions: what worked, what failed, why, what to train next.","reflection.reflect"],
+ ["generalize","Generalize","Extract the principle; strip environment specifics.","learning.learn_success"],
+ ["store","Store learning","Top-k memory plus knowledge registry with provenance.","memory.store"],
+ ["evaluate","Evaluate","Unseen, transfer, and adversarial suites; process quality included.","evaluation.run_eval"],
+ ["capability_update","Update capability","Advance levels on evidence only; one step maximum.","capability_graph.set_level"],
+ ["next_weakness","Next weakness","Weakest first, with prerequisites respected.","capability_graph.recommend"],
+ ["train","Targeted training","Deliberate practice and transfer runs on the weakness.","practice.register_module"],
+ ["regression","Regression test","The full suite must stay green before any change lands.","evolution.regression_record"],
+ ["improve","Self-improve","Sandboxed candidates; approve on measured gain or roll back.","evolution.decide"]
+];
+/* ================= SYSTEM MAP ================= */
+const svg=document.getElementById('svg'),NS="http://www.w3.org/2000/svg";
+const W=1440,H=480;
+svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+const LC={};LAYERS.forEach(l=>LC[l.id]=l);
+NODES.forEach(n=>{n.x=LC[n.layer].x;n.layerColor=LC[n.layer].color;n.tint=LC[n.layer].tint;});
+function el(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;}
+LAYERS.forEach(l=>{const t=el('text',{x:l.x+58,y:18,'text-anchor':'middle',fill:l.color,
+ class:'colhead'});t.textContent=l.label;svg.appendChild(t);});
+const byId={};NODES.forEach(n=>byId[n.id]=n);
+EDGES.forEach(([a,b,lbl,fb])=>{const A=byId[a],B=byId[b];if(!A||!B)return;
+ const x1=A.x+58,y1=A.y+22,x2=B.x-58,y2=B.y+22;
+ const mx=(x1+x2)/2;
+ const p=el('path',{d:`M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`,
+  class:'edge'+(fb?' flow':''),'data-a':a,'data-b':b});svg.appendChild(p);
+ if(lbl){const t=el('text',{x:mx,y:(y1+y2)/2-4,'text-anchor':'middle',class:'edgeLbl'});
+  t.textContent=lbl;svg.appendChild(t);}});
+const gNodes={};
+NODES.forEach(n=>{const g=el('g',{class:'node','data-id':n.id});
+ g.appendChild(el('rect',{x:n.x-58,y:n.y-24,width:116,height:48,rx:5,class:'card',fill:n.tint}));
+ g.appendChild(el('rect',{x:n.x-58,y:n.y-24,width:4,height:48,fill:n.layerColor}));
+ const t1=el('text',{x:n.x+4,y:n.y-1,'text-anchor':'middle'});t1.textContent=n.label;g.appendChild(t1);
+ const t2=el('text',{x:n.x+4,y:n.y+14,'text-anchor':'middle',class:'sub'});t2.textContent=n.sub;g.appendChild(t2);
+ g.addEventListener('click',ev=>{ev.stopPropagation();select(n.id);});
+ gNodes[n.id]=g;svg.appendChild(g);});
+const legend=document.getElementById('legend');
+LAYERS.forEach(l=>{const s=document.createElement('span');
+ s.innerHTML=`<i style="background:${l.color}"></i>${l.label.charAt(0)+l.label.slice(1).toLowerCase()}`;
+ legend.appendChild(s);});
+const extra=document.createElement('span');
+extra.innerHTML=`<i style="background:#5b7fa6"></i>Feedback / learning (dashed)`;
+legend.appendChild(extra);
+const detail=document.getElementById('detail');
+function select(id){const n=byId[id];if(!n)return;
+ Object.values(gNodes).forEach(g=>g.classList.remove('sel','dim'));
+ gNodes[id].classList.add('sel');
+ const linked=new Set([id]);
+ EDGES.forEach(([a,b])=>{if(a===id)linked.add(b);if(b===id)linked.add(a);});
+ Object.entries(gNodes).forEach(([k,g])=>{if(!linked.has(k))g.classList.add('dim');});
+ const lc=LC[n.layer];
+ detail.innerHTML=`<span class="tag" style="background:${lc.color}">${lc.label}</span>
+  <h3>${n.label}</h3><div class="fileline">${n.sub}</div><p>${n.d}</p>
+  <h4>Implementation</h4><p>${n.f.map(f=>`<code>${f}</code>`).join(' ')}</p>
+  ${n.c.length?`<h4>Usage</h4><p>${n.c.map(c=>`<code>${c}</code>`).join('<br>')}</p>`:''}`;}
+svg.addEventListener('click',()=>{Object.values(gNodes).forEach(g=>g.classList.remove('sel','dim'));
+ detail.innerHTML='<h3>Component detail</h3><p style="font-size:.85rem;color:var(--dim)">Select a component in the diagram.</p>';});
+const cv=document.getElementById('canvas');
+let vx=0,vy=0,vw=W,vh=H;const setVB=()=>svg.setAttribute('viewBox',`${vx} ${vy} ${vw} ${vh}`);
+cv.addEventListener('wheel',e=>{e.preventDefault();const d=e.deltaY<0?0.85:1.18;
+ const r=svg.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;
+ const sx=vx+mx/r.width*vw,sy=vy+my/r.height*vh;
+ vw*=d;vh*=d;vx=sx-mx/r.width*vw;vy=sy-my/r.height*vh;setVB();},{passive:false});
+let drag=null;
+cv.addEventListener('mousedown',e=>{drag=[e.clientX,e.clientY];cv.style.cursor='grabbing';});
+window.addEventListener('mousemove',e=>{if(!drag)return;const r=svg.getBoundingClientRect();
+ vx-=(e.clientX-drag[0])/r.width*vw;vy-=(e.clientY-drag[1])/r.height*vh;drag=[e.clientX,e.clientY];setVB();});
+window.addEventListener('mouseup',()=>{drag=null;cv.style.cursor='grab';});
+/* ================= LOOP ================= */
+let cur=0,playing=null;
+const stitle=document.getElementById('stitle'),sdesc=document.getElementById('sdesc'),
+ sgate=document.getElementById('sgate'),pf=document.getElementById('progfill'),
+ cnt=document.getElementById('cnt'),slist=document.getElementById('steplist');
+STEPS.forEach((s,i)=>{const sp=document.createElement('span');sp.textContent=`${i+1}. ${s[0]}`;
+ sp.onclick=()=>{cur=i;render();};slist.appendChild(sp);});
+function render(){const [id,t,d,g]=STEPS[cur];
+ stitle.innerHTML=`Step ${cur+1} of 25 — ${t} <small>(${id})</small>`;sdesc.textContent=d;sgate.textContent=g;
+ pf.style.width=((cur+1)/STEPS.length*100)+'%';cnt.textContent=`${cur+1} / ${STEPS.length}`;
+ [...slist.children].forEach((sp,i)=>{sp.className=i<cur?'done':i===cur?'cur':'';});}
+document.getElementById('prev').onclick=()=>{cur=(cur+STEPS.length-1)%STEPS.length;render();};
+document.getElementById('next').onclick=()=>{cur=(cur+1)%STEPS.length;render();};
+document.getElementById('play').onclick=e=>{if(playing){clearInterval(playing);playing=null;
+ e.target.textContent='Play';}else{playing=setInterval(()=>{cur=(cur+1)%STEPS.length;render();},1800);
+ e.target.textContent='Pause';}};
+render();
+/* ================= MODULE TABLE ================= */
+const MODS=[
+ ["orchestrator.py","Core","World-model owner; depth-1 dispatch with scope, info-gain, and watchdog gates","asrp start"],
+ ["state.py","Core","Mission state, twelve phases, file-persisted and resumable","—"],
+ ["loop.py","Core","25-step loop state machine with six modes","v2 loop --mode ctf"],
+ ["models.py","Core","Task-based model routing; independent verifier","—"],
+ ["preflight.py","Entry · immutable","Objective, target, authorization, and scope validation","asrp preflight"],
+ ["scope.py","Entry · immutable","Hard allowlist, expiry, kill switch, per-action check","—"],
+ ["constitution.py","Entry","Twenty principles and the mission-specification builder","—"],
+ ["research.py","Reasoning","Query building, evidence extraction, cross-verification","—"],
+ ["sources.py","Reasoning","Ten-tier reliability ranking with conflict preservation","—"],
+ ["hypotheses.py","Reasoning","Hypothesis objects with disqualifiers; anti-confirmation-bias","hypothesis propose/list"],
+ ["alternatives.py","Reasoning","Multi-path ranking by gain, cost, and risk","—"],
+ ["reasoning.py","Reasoning","Fourteen-strategy ranker with failure penalty","—"],
+ ["info_gain.py","Reasoning","Expected-gain action scoring under constraints","—"],
+ ["readiness.py","Reasoning","Structured readiness gate with experiment records","asrp readiness"],
+ ["skill_registry.py","Execution","Lazy skill loading with relevance matching","—"],
+ ["capabilities.py","Execution","Tool registry: risk, authentication, timeout, schema","—"],
+ ["injection.py","Execution · immutable","Prompt-injection quarantine","—"],
+ ["memory.py","Knowledge","L0–L4 store with top-k retrieval","—"],
+ ["context.py","Knowledge","History compaction and gain-per-compute tradeoff","—"],
+ ["capability_graph.py","Knowledge","Seven-level graph with prerequisite-gated training","graph recommend/level"],
+ ["knowledge_registry.py","Knowledge","Hygiene states and workflow registry","v2 seed"],
+ ["corpus/*","Knowledge","33k reports: dedupe, classify, index","corpus query/stats"],
+ ["evidence.py","Verify","Immutable records with verification status","—"],
+ ["claims.py","Verify","Fact, inference, and hypothesis labels","—"],
+ ["verification.py","Verify","Reproduction, alternative-explanation, and impact gate","—"],
+ ["novelty.py","Verify","Known-versus-novel detector","—"],
+ ["chains.py","Verify","Attack-path builder with per-step evidence","—"],
+ ["failures.py","Learn","Fourteen-category taxonomy with fix pipeline","v2 fail"],
+ ["learning.py","Learn","Post-mortems with no-overgeneralization guard","—"],
+ ["reflection.py","Learn","Twelve-question reflection, method audit, budgets","v2 method-audit/budget"],
+ ["training.py","Evolve","Lab attempts with curriculum ranking","—"],
+ ["practice.py","Evolve","Practice modules, transfer runs, training domains","—"],
+ ["evaluation.py","Evolve","Outcome, process, and generalization metrics","eval-demo"],
+ ["evolution.py","Evolve","Sandboxed candidates with adversarial templates","v2 evolve-demo"],
+ ["meta.py","Evolve","Strategy and transfer meta-report","v2 meta"],
+ ["mastery.py","Evolve","Seven-dimension mastery gate","v2 mastery"],
+ ["tokens.py","Evolve","Accounting, dedupe, progressive disclosure","—"],
+ ["jobs.py","Observe","Checkpoints and crash recovery","recover --mission"],
+ ["watchdog.py","Observe","Stuck detection with strategy-change remedy","—"],
+ ["observability.py","Observe","Redacted decision telemetry","—"],
+ ["decisions.py","Observe","Decision, rationale, alternatives, falsifier records","—"],
+ ["reporting.py","Observe","Disclosure packages with human gate","—"],
+ ["creds.py","Observe · immutable","Credential metadata only","—"],
+ ["redaction.py","Observe · immutable","Secret redaction across outputs","—"]
+];
+const tb=document.querySelector('#modtable tbody');
+MODS.forEach(m=>{const tr=document.createElement('tr');tr.dataset.k=(m[0]+m[2]).toLowerCase();
+ tr.innerHTML=`<td><code>${m[0]}</code></td><td>${m[1]}</td><td>${m[2]}</td><td><code>${m[3]}</code></td>`;
+ tb.appendChild(tr);});
+/* ================= TABS + FILTER ================= */
+document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('nav.tabs button').forEach(x=>x.classList.remove('active'));
+ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+ b.classList.add('active');document.getElementById('tab-'+b.dataset.tab).classList.add('active');});
+document.getElementById('q').oninput=e=>{const q=e.target.value.toLowerCase();
+ NODES.forEach(n=>{const hit=!q||(n.label+n.d+n.sub).toLowerCase().includes(q);
+  gNodes[n.id].style.display=hit?'':'none';});
+ document.querySelectorAll('#modtable tbody tr').forEach(tr=>
+  tr.classList.toggle('hide',q&&!tr.dataset.k.includes(q)));};
+</script>
 </body>
 </html>
