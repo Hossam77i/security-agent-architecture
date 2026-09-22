@@ -3,7 +3,7 @@
 # RA SECURITY - Autonomous Agent Architecture
 > An evolving architectural framework for long-running, autonomous cybersecurity agents.
 
-## 🚀 Explore the Interactive V2 Architecture
+## Interactive V2 Architecture
 **[Interactive V2 Website & Architecture Explorer](https://Hossam77i.github.io/security-agent-architecture/)**
 
 ---
