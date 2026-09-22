@@ -54,6 +54,14 @@ The problem is not simply making an LLM capable of performing security tasks. Th
 7. **Efficiency is part of performance:** Task success alone is not enough.
 8. **Security automation must remain auditable:** Decisions and actions must be observable.
 
+## The Agent Problem Space
+RA SECURITY is motivated by a broad set of over 60+ documented engineering challenges that appear when building long-running AI agents. Instead of simply building an LLM wrapper, this project maps root causes in memory, reasoning, tooling, evaluation, and security to specific architectural boundaries.
+
+Explore the problem taxonomy here:
+- [Full Agent Problems Taxonomy](docs/research/agent-problems.md)
+- [Problem ↔ Architecture Matrix](docs/research/problem-architecture-matrix.md)
+- [Problem Coverage Map (Status & Evidence)](docs/research/problem-coverage.md)
+
 ## High-Level Solution & Architecture Overview
 To address these challenges, the architecture is organized into interacting layers.
 
